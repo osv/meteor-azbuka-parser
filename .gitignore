@@ -7,9 +7,13 @@ lib-cov
 *.pid
 *.gz
 
+*~
+*#
 pids
 logs
 results
+
+.tern-project
 
 npm-debug.log
 node_modules
