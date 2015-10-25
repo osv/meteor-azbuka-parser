@@ -7,7 +7,7 @@
   "requireCommaBeforeLineBreak": true,
   "requireSpaceBeforeBinaryOperators": true,
   "requireSpaceAfterBinaryOperators": true,
-  "disallowSpaceAfterPrefixUnaryOperators": true,
+  "disallowSpaceAfterPrefixUnaryOperators": ["++", "--", "+", "-", "~", "!!"],
   "disallowSpacesInsideObjectBrackets": true,
   "disallowSpacesInsideArrayBrackets": true
 }
