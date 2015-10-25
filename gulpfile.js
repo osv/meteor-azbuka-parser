@@ -7,7 +7,7 @@
 var gulp = require('gulp'),
     jshint = require('gulp-jshint'),
     jscs = require('gulp-jscs'),
-    jsonlint = require("gulp-jsonlint"),
+    jsonlint = require('gulp-jsonlint'),
     runSequence = require('run-sequence');
 
 /**

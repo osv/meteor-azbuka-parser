@@ -1,4 +1,6 @@
 {
+  "quotmark" : "single",
+  "esnext": true,
   "browser": true,
   "curly": true,
   "eqeqeq": true,
