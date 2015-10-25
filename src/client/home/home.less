@@ -1,0 +1,30 @@
+.header-wrapper {
+    background-image: url('/images/background.jpg');
+    height: 450px;
+    margin-top: -30px;
+    background-position: 100% 100%;
+    transition: height 0.8s;
+    color: white;
+    &.active {
+        height: 900px;
+    }
+    h1 {
+        font-size: 3em;
+        padding-top: 130px;
+        text-align: center;
+        font-family: 'Glegoo', serif;
+    }
+    .btn {
+        font-family: 'Glegoo', serif;
+        font-size: 1.5em;
+        color: white;
+        background-color: rgba(0,0,0, 0.5);
+        border-color: #ccc;
+        transition: background-color 0.8s;
+        outline: none !important;
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+            // background-color: inherit !important;
+        }
+    }
+}

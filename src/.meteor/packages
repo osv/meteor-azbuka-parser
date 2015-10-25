@@ -22,5 +22,6 @@ iron:router             # router
 manuelschoebel:ms-seo   # SEO object
 nemo64:bootstrap        # configurable bootstrap
 audit-argument-checks   # check
+reactive-var
 check
 less
