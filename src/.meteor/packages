@@ -22,6 +22,12 @@ iron:router             # router
 manuelschoebel:ms-seo   # SEO object
 nemo64:bootstrap        # configurable bootstrap
 audit-argument-checks   # check
+useraccounts:unstyled
+# accounts-password
+service-configuration
+accounts-google
+accounts-facebook
+natestrauser:animate-css
 reactive-var
 check
 less
