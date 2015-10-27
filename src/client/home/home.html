@@ -2,21 +2,59 @@
   <div class="row">
     <div class="header-wrapper {{isActive}}">
       <div class="text-center">
-        <h1>
-          test
-        </h1>
-        <div>
-          <button data-action="tglLogin" class="btn btn-lg btn-link">
-            Sign in
-          </button>
-        </div>      
+        <div class="row">
+          <h1>
+            test
+          </h1>
+          <div>
+            <button data-action="tglLogin" class="btn btn-lg btn-link">
+              Entrance
+            </button>
+          </div>
+        </div>
+        <div class="row text-left">
+          {{#if showLogin}}
+          <div class="login-wrapper {{animateClass}} animated">
+            {{#if currentUser}}
+            <div class="actions-wrapper">
+              {{#if username}}
+              <div class="hello">Hi {{username}}!</div>
+              {{/if}}
+              <a class="logout" href="#" data-action="logout">
+                Log out
+              </a>
+            </div>
+            {{else}}
+            {{> atForm }}
+            {{/if}}
+          </div>
+          {{/if}}
+        </div>
       </div>
     </div>
   </div>
   <div class="container">
     <div class="row">
       <div class="col-lg-3">
-        dsfsdf
+        dsfsdf <br />
+        dsfsdf <br />
+        dsfsdf <br />
+        dsfsdf <br />
+        dsfsdf <br />
+        dsfsdf <br />
+        dsfsdf <br />
+        dsfsdf <br />
+        dsfsdf <br />
+        dsfsdf <br />
+        dsfsdf <br />
+        dsfsdf <br />
+        dsfsdf <br />
+        dsfsdf <br />
+        dsfsdf <br />
+        dsfsdf <br />
+        dsfsdf <br />
+        dsfsdf <br />
+        dsfsdf <br />
       </div>
     </div>
   </div>

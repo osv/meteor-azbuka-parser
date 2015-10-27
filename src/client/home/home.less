@@ -1,17 +1,20 @@
+@import '../variables.less';
+
 .header-wrapper {
     background-image: url('/images/background.jpg');
     height: 450px;
     margin-top: -30px;
     background-position: 100% 100%;
     transition: height 0.8s;
-    color: white;
     &.active {
         height: 900px;
     }
     h1 {
+        color: white;
         font-size: 3em;
         padding-top: 130px;
         text-align: center;
+        text-shadow: 2px 2px 0px #111;
         font-family: 'Glegoo', serif;
     }
     .btn {
@@ -26,5 +29,65 @@
             background-color: rgba(0, 0, 0, 0.7);
             // background-color: inherit !important;
         }
+    }
+}
+
+.login-wrapper {
+    max-width: @loginFormWidth;
+    margin: 2em auto 0 auto;
+    color: @loginFontColor;
+    background-color: @loginBgColor;
+    border-radius: 4px;
+    font-family: 'Glegoo', serif;
+
+    .at-title, label {
+        text-align: center;
+        display: block;
+    }
+
+    .at-form {
+        padding: 1em;
+        border-radius: 0.4em;
+        form .at-input {
+            > label { color: @loginSecondaryFontColor; }
+            input {
+                width: 100%;
+            }
+        }
+    }
+
+    .at-social-btn {
+        border-radius: 4px;
+        display: block;
+        width: 100%;
+        margin-top: 15px;
+    }
+    
+    .at-error {
+        padding: 15px;
+        color: red;
+        font-family: 'Glegoo', serif;
+        p {
+            margin: 0px;
+        }
+    }
+
+    .actions-wrapper {
+        max-width: @loginFormWidth / 2;
+        margin: 0 auto;
+    }
+    
+    .at-signin-link, .at-signup-link {
+        border-top: 1px solid @loginSecondaryFontColor;
+        margin-top: 1em;
+        color: @loginFontColor;
+    }
+
+    .at-link {
+        // color: @loginSecondaryFontColor;
+    }
+    
+    .hello {
+        margin-bottom: 1em;
     }
 }
