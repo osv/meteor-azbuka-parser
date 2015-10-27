@@ -1,7 +1,8 @@
 {
+  "plugins": ["jscs-trailing-comma"],
   "validateIndentation":2,
+  "esnext": true,
   "disallowTrailingWhitespace": true,
-  "disallowTrailingComma": true,
   "disallowNewlineBeforeBlockStatements": true,
   "requireSpaceAfterBinaryOperators": true,
   "requireCommaBeforeLineBreak": true,
@@ -9,5 +10,11 @@
   "requireSpaceAfterBinaryOperators": true,
   "disallowSpaceAfterPrefixUnaryOperators": ["++", "--", "+", "-", "~", "!!"],
   "disallowSpacesInsideObjectBrackets": true,
-  "disallowSpacesInsideArrayBrackets": true
+  "disallowSpacesInsideArrayBrackets": true,
+  "disallowTrailingCommaInCollapsedLiterals": {
+    "inArrays": true
+  },
+  "disallowTrailingCommaInExpandedLiterals": {
+    "inArrays": true
+  }
 }
