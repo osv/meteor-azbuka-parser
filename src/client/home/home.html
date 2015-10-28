@@ -10,6 +10,11 @@
             <button data-action="tglLogin" class="btn btn-lg btn-link">
               Entrance
             </button>
+            {{#if currentUser}}
+              <a data-action="logout" href="#" class="btn btn-lg btn-link">
+                Log out
+              </a>
+            {{/if}}
           </div>
         </div>
         <div class="row text-left">
@@ -18,11 +23,9 @@
             {{#if currentUser}}
             <div class="actions-wrapper">
               {{#if username}}
-              <div class="hello">Hi {{username}}!</div>
+                <div class="hello">Hi {{username}}!</div>
+                <a href="{{pathFor route="settings"}}">Settings</a>
               {{/if}}
-              <a class="logout" href="#" data-action="logout">
-                Log out
-              </a>
             </div>
             {{else}}
             {{> atForm }}

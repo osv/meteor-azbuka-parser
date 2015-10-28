@@ -1,11 +1,13 @@
 <template name="appLayout">
   <div id="main">
     <header>
-
+      {{>header}}
     </header>
 
-    {{> yield}}
-    {{! Also a sidebar! }}
+    <div class="conteiner">
+      {{> yield}}      
+    </div>
+
     <footer>
 
     </footer>

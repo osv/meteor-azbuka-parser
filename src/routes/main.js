@@ -8,3 +8,7 @@ Router.route('/', {
     SEO.set({title: 'Home - ' + Meteor.App.NAME});
   }
 });
+
+Router.route('/settings', {
+  name: 'settings',
+});
