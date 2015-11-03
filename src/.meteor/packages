@@ -21,7 +21,14 @@ insecure                # Allow all DB writes from clients (for prototyping)
 iron:router             # router
 manuelschoebel:ms-seo   # SEO object
 nemo64:bootstrap        # configurable bootstrap
+fortawesome:fontawesome
 audit-argument-checks   # check
+aldeed:collection2     # simple collection
+aldeed:autoform
+aldeed:autoform-select2
+dburles:collection-helpers
+zimme:select2-bootstrap3-css
+chrismbeckett:toastr
 useraccounts:unstyled
 # accounts-password
 service-configuration

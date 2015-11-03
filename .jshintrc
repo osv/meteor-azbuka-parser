@@ -16,6 +16,7 @@
   "strict": false,
   "predef": [
     "Meteor",
+    "Template",
     "Mongo"
   ]
 }

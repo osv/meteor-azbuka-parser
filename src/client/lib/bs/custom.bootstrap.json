@@ -2,7 +2,7 @@
   "modules" : {
     "normalize"            : true,
     "print"                : false,
-    "glyphicons"           : false,
+    "glyphicons"           : true,
 
     "scaffolding"          : true,
     "type"                 : true,

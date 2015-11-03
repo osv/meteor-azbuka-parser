@@ -1,3 +1,18 @@
 <template name="settings">
-  settings
+  {{#if this}}
+    {{ >updateSetting this}}
+  {{else}}
+    {{ >insertSetting}}
+  {{/if}}
+</template>
+
+<template name="insertSetting">
+  <h1>App still not configured!</h1>
+  <p class="lead">Looks you run your app first time, please fill next form:</p>
+  {{> quickForm collection="Settings" id="insertSetting" type="insert"}}
+</template>
+
+<template name="updateSetting">
+  <h1>Update your settings:</h1>
+  {{> quickForm collection="Settings" doc=this id="updateSetting" type="update"}}
 </template>

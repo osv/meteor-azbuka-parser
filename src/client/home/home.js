@@ -2,6 +2,7 @@
 
 var isActive = new ReactiveVar(false);
 var showLogin = new ReactiveVar(false);
+
 Template.home.events({
   'click [data-action="tglLogin"]': function() {
 

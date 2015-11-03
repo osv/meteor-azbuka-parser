@@ -1,4 +1,4 @@
-/* globals ServiceConfiguration, process */
+/* globals ServiceConfiguration, process, Accounts */
 
 Meteor.startup(function() {
   let env = process.env;
@@ -28,4 +28,15 @@ Meteor.startup(function() {
     {upsert: true}
   );
 
+});
+
+Accounts.onCreateUser(function (options, user) {
+  let anyUser = Meteor.users.findOne();
+
+  if (! anyUser) {
+    user.isAdmin = true;
+  }
+
+  user.profile = options.profile;
+  return user;
 });
