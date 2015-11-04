@@ -2,5 +2,8 @@
 
 Router.configure({
   layoutTemplate: 'appLayout',
-  notFoundTemplate: 'notFound'
+  notFoundTemplate: 'notFound',
+  subscriptions() {
+    return Meteor.subscribe('userData');
+  }
 });
