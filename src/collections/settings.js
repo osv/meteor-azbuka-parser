@@ -1,15 +1,35 @@
-/* global SimpleSchema, Settings:true, isAdminById, isAdmin */
+/*global SimpleSchema, Settings, Acl, Mongo */
 
+/* jshint -W020 */
 Settings = new Mongo.Collection('Settings');
 
-let azbukaGroup = 'Azbuka credential';
-
-var SettingsSchema = new SimpleSchema({
-  sex: {
+var CredentialSchema = new SimpleSchema({
+  login: {
     type: String,
     autoform: {
-      type: 'select2',
-      group: 'Crawl',
+      label: 'Azbuka login',
+    }
+  },
+
+  password: {
+    type: String,
+    autoform: {
+      label: 'Password',
+    }
+  },
+});
+
+var SettingsSchema = new SimpleSchema({
+  enable: {
+    type: Boolean,
+    defaultValue: false,
+  },
+
+  sex: {
+    type: String,
+    defaultValue: 'any',
+    autoform: {
+      type: 'selectize',
       label: 'Which gender to scrap',
       options: [
         {label: 'Female', value: 'female'},
@@ -18,19 +38,11 @@ var SettingsSchema = new SimpleSchema({
       ]
     }
   },
-  azLogin: {
-    type: String,
-    autoform: {
-      label: 'Azbuka login',
-      group: azbukaGroup
-    }
-  },
-  azPassword: {
-    type: String,
-    autoform: {
-      label: 'Password',
-      group: azbukaGroup
-    }
+
+  azbuka: {
+    optional: true,
+    type: CredentialSchema,
+    label: 'Credential information for azbuka.ru'
   },
 
   userAgent: {
@@ -51,17 +63,7 @@ var SettingsSchema = new SimpleSchema({
 Settings.attachSchema(SettingsSchema);
 
 Settings.allow({
-  insert: isAdminById,
-  update: isAdminById,
-  remove: isAdminById
+  update: Acl.isAdminById,
 });
 
-if (Meteor.isServer) {
-  Meteor.publish('setting', function() {
-    if (! isAdmin(this.userId)) {
-      return [];
-    }
-
-    return Settings.findOne();
-  });
-}
+Settings.PUBLIC_FIELDS = [];

@@ -1,11 +1,14 @@
-/* global isAdmin:true, isAdminById:true */
+/*global Acl, Meteor */
 
-isAdmin = function(user){
+/* jshint -W020 */
+Acl = {};
+
+Acl.isAdmin = function(user){
   user = (typeof user === 'undefined') ? Meteor.user() : user;
   return !!user && !!user.isAdmin;
 };
 
-isAdminById = function(userId){
+Acl.isAdminById = function(userId){
   var user = Meteor.users.findOne(userId);
-  return !!(user && isAdmin(user));
+  return !!(user && Acl.isAdmin(user));
 };
