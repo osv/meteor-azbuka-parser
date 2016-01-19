@@ -1,7 +1,7 @@
 /*global SimpleSchema, Settings, Acl, Mongo */
 
 /* jshint -W020 */
-Settings = new Mongo.Collection('Settings');
+Settings = new Mongo.Collection('settings');
 
 var CredentialSchema = new SimpleSchema({
   login: {
@@ -23,6 +23,7 @@ var SettingsSchema = new SimpleSchema({
   enable: {
     type: Boolean,
     defaultValue: false,
+    label: 'Enable scrapping'
   },
 
   sex: {

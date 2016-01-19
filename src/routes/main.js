@@ -23,10 +23,10 @@ AuthController = RouteController.extend({
 AdminController = AuthController.extend({
   onBeforeAction() {
     let user = Meteor.user();
-
-    if (! user || ! user.isAdmin) {
-      return this.redirect('home');
-    }
+    // Meteor
+    // if (! user || ! user.isAdmin) {
+    //   return this.redirect('home');
+    // }
     this.next();
   }
 });
@@ -42,6 +42,17 @@ Router.route('/settings', {
 
   data() {
     SEO.set({title: 'Settings - ' + Meteor.App.NAME});
+    return Settings.findOne();
+  }
+});
+
+Router.route('/control', {
+  name: 'control',
+
+  controller: 'AdminController',
+
+  data() {
+    SEO.set({title: 'Control - ' + Meteor.App.NAME});
     return Settings.findOne();
   }
 });
