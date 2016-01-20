@@ -1,4 +1,4 @@
-/*global SimpleSchema, Settings, Acl, Mongo */
+/*global SimpleSchema, Settings, Acl, Mongo, getSettings */
 
 /* jshint -W020 */
 Settings = new Mongo.Collection('settings');
@@ -40,6 +40,18 @@ var SettingsSchema = new SimpleSchema({
     }
   },
 
+  days: {
+    type: Number,
+    defaultValue: 200,
+    label: 'Days. Fetch depth. How many days user was inactive'
+  },
+
+  forceUpdate: {
+    type: Boolean,
+    optional: true,
+    label: 'Turn on to scrap all data again.'
+  },
+
   azbuka: {
     optional: true,
     type: CredentialSchema,
@@ -68,3 +80,7 @@ Settings.allow({
 });
 
 Settings.PUBLIC_FIELDS = [];
+
+getSettings = function() {
+  return Settings.findOne() || {};
+};

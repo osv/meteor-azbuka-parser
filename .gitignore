@@ -12,8 +12,9 @@ lib-cov
 pids
 logs
 results
-
+run.sh
 .tern-project
+.tern-por
 
 npm-debug.log
 node_modules

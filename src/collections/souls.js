@@ -24,17 +24,24 @@ var SoulSchema = new SimpleSchema({
     type: String,
   },
 
+  name: {
+    type: String,
+  },
+
   loc: {
     type: String,
-    label: 'Location of user'
+    label: 'Location of user',
+    optional: true,
   },
 
   age: {
     type: Number,
+    optional: true,
   },
 
   sex: {
-    type: String
+    type: String,
+    optional: true,
   },
 
   views: {
@@ -50,12 +57,25 @@ var SoulSchema = new SimpleSchema({
 
   mainInfo: {
     type: String,
+    optional: true,
   },
 
   history: {
     label: 'Changed fields',
     type: [SoulHistorySchema],
     optional: true,
+  },
+
+  images: {
+    type: [String],
+    optional: true
+  },
+
+  update: {
+    type: Boolean,
+    optional: true,
+    defaultValue: true,
+    label: 'Update this profile next time'
   },
 
   // Force value to be current date (on server) upon update
@@ -68,6 +88,8 @@ var SoulSchema = new SimpleSchema({
   createdAt: {
     type: Date,
     autoValue: function() {
+      console.log(this);
+
       if (this.isInsert) {
         return new Date();
       } else if (this.isUpsert) {
