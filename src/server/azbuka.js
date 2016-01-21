@@ -1,4 +1,4 @@
-/*global Azbuka, Meteor, getSettings, console, JobProfiles, JobImages, Souls, check */
+/*global Errors, Azbuka, Meteor, getSettings, console, JobProfiles, JobImages, Souls, check */
 
 var Iconv = Meteor.npmRequire('iconv').Iconv,
     iconv = new Iconv('cp1251', 'utf8');
@@ -104,7 +104,7 @@ Azbuka.search = function(options) {
     return ($el.innerText || '').match(/следующая/);
   });
 
-  if (!items < 20) {
+  if (items < 20 && isNextPage) {
     this.logger.warn('Azbuka page have < 20 items, maybe redesigned?');
     Errors.insert({body: {
       info: 'Azbuka.fetch. Azbuka page have < 20 items, check HTML',
