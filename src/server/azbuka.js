@@ -14,7 +14,10 @@ Azbuka = {
   logger: console,
 };
 
-// Return num of items
+// Search and add jobs for fetching images and profiles.
+// Append souls collection with new soul
+//
+// Return num of items so if 0 stop crawl next page
 Azbuka.search = function(options) {
   let {days, page} = options;
 
@@ -30,9 +33,9 @@ Azbuka.search = function(options) {
     `page=${page}`
   ];
 
-  if (settings.sex == 'female') {
+  if (settings.sex === 'female') {
     params.push('iseek=%E6%E5%ED%F9%E8%ED%F3');
-  } else if (settings.sex == 'male') {
+  } else if (settings.sex === 'male') {
     params.push('%EC%F3%E6%F7%E8%ED%F3');
   }
 
