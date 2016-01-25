@@ -71,6 +71,11 @@ var SoulSchema = new SimpleSchema({
     optional: true
   },
 
+  lastSeen: {
+    type: Date,
+    optional: true
+  },
+
   update: {
     type: Boolean,
     optional: true,
