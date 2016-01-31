@@ -10,6 +10,7 @@ var cheerio = Meteor.npmRequire('cheerio');
 // Azbuka api
 Azbuka = {
   logger: console,
+  cookieJar: syncRequest.jar(),
   country: '%D3%EA%F0%E0%E8%ED%E0' // украина
 };
 
@@ -36,16 +37,48 @@ Azbuka.error = function(obj) {
   throw new Error('[crawl] ' + obj.info);
 };
 
-Azbuka.get = function(url) {
-  var raw = Meteor.http.get(url, {
-    npmRequestOptions: {
-      encoding: null,           // get content as binary data
-      responseType: 'buffer'    // get it as a buffer
-    }
-  }).content;
+// Fetch @uri. Set @useCookie to true for use cookie
+Azbuka.get = function(url, useCookie) {
+  var options = {
+    encoding: null,           // get content as binary data
+    responseType: 'buffer'    // get it as a buffer
+  };
+
+  if (useCookie) {
+    options.jar = this.cookieJar;
+  }
+
+  var raw = syncRequest.get(url, options).content;
 
   var html = iconv.convert(raw).toString();
   return html;
+};
+
+Azbuka.login = function(login, password) {
+  var loginUrl = 'http://azbyka.ru/znakomstva/index.php?module=community&file=login';
+  var ERROR_TYPE = '[Azbyka.login]';
+
+  var credential = {
+    login: login,
+    password: password
+  };
+
+  var res = syncRequest.post(loginUrl, {
+    form: _.extend({send: 'ok'}, credential),
+    encoding: null,           // get content as binary data
+    responseType: 'buffer',   // get it as a buffer
+    jar: this.cookieJar,
+  });
+
+  if (res.statusCode !== 302) {
+    this.error({
+      info: `${ERROR_TYPE} Expected status 302, but got "${res.statusCode}"`,
+      usedLogin: login
+    });
+  }
+
+  // var cookie
+  console.log(res);
 };
 
 Azbuka.parseDate = function(str) {
@@ -234,13 +267,7 @@ Azbuka.getProfile = function(options) {
   const url = 'http://azbyka.ru/znakomstva/anketa/' + azbukaProfile;
   console.log(url);
 
-
-  if (authorized) {
-    // download with auth
-  } else {
-    html = this.get(url);
-    // just fetch
-  }
+  html = this.get(url, authorized);
 
   if (html.match(/Анкета не найдена/i)) {
     return null;
