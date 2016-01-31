@@ -17,6 +17,7 @@
   "predef": [
     "Meteor",
     "Template",
-    "Mongo"
+    "Mongo",
+    "_"
   ]
 }

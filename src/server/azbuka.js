@@ -198,6 +198,9 @@ Azbuka.search = function(options) {
  * Fetch user  profile. Add images jobs.
  * Return Object or null if not foun. Object:
  * {
+ *  invisibleImages: Boolean // True - Hidden profile
+ *                           // You should download this with options.authorized  true
+ *  numOfImages: Number  // number of images (even if invisibleImages is true)
  *  images: [String],
  *  name: String,
  *  loc: String,
@@ -284,8 +287,8 @@ Azbuka.getProfile = function(options) {
   var pImages = [];
 
   $(SELECTOR_PROFILE_IMAGES).each(function(i, e) {
-    var url = $(this).attr('src') || '';
-    var imageId = url.replace(/^.*\//, '');
+    let url = $(this).attr('src') || '';
+    let imageId = url.replace(/^.*\//, '');
     pImages.push(imageId);
   });
 
@@ -300,14 +303,18 @@ Azbuka.getProfile = function(options) {
         self.parseDate($(SELECTOR_PROFILE_OFFLINE_STATUS).text())
         : new Date();
 
-  var hasInvisibleImages = $(maininfo).find(SELECTOR_PROFILE_INVISIBLE).length;
-
-  // if invisible user, refetch html but authorize to see all pictures
-  if (_.isEmpty(pImages) && ! authorized && hasInvisibleImages) {
-    return this.getProfile({
-      azbukaProfile,
-      authorized: true
-    });
+  var pHasInvisibleImages = $(maininfo).find(SELECTOR_PROFILE_INVISIBLE).length;
+  var pNumOfImages = pImages.length;
+  if (pHasInvisibleImages) {
+    let matches = html.match(/file=login">\s*(\d+)\s*фото<\/a>/i);
+    if (!matches) {
+      self.error({
+        info: `${ERROR_TYPE} Profile have hidden images but cant find count`,
+        desc: 'Looks here no url \"<a href="/znakomstva/index.php?module=community&amp;file=login">123 фото</a>\"',
+        profileId: azbukaProfile,
+      });
+    }
+    pNumOfImages = matches[1];   // \d+
   }
 
   var pAbout = {};
@@ -363,13 +370,15 @@ Azbuka.getProfile = function(options) {
     maininfo: maininfo.html(),
     lastSeen: pLastseen,
     about: pAbout,
+    invisibleImages: pHasInvisibleImages,
+    numOfImages: pNumOfImages
   };
   return profile;
 };
 
 var profile = Azbuka.getProfile({
   azbukaProfile: 'zlata_99808',
-  authorized: true
+  authorized: false
 });
 
 

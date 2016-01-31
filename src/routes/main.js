@@ -22,7 +22,7 @@ AuthController = RouteController.extend({
 
 AdminController = AuthController.extend({
   onBeforeAction() {
-    let user = Meteor.user();
+    //let user = Meteor.user();
     // Meteor
     // if (! user || ! user.isAdmin) {
     //   return this.redirect('home');

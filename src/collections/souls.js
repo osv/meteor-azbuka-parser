@@ -93,8 +93,6 @@ var SoulSchema = new SimpleSchema({
   createdAt: {
     type: Date,
     autoValue: function() {
-      console.log(this);
-
       if (this.isInsert) {
         return new Date();
       } else if (this.isUpsert) {
