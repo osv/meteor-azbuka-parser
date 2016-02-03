@@ -1,4 +1,6 @@
-/*global Errors, Azbuka, Meteor, getSettings, console, JobProfiles, JobImages, Souls, check, Match */
+/*global Errors,  Azbuka, Meteor, getSettings, console,  JobProfiles, JobImages, */
+/*global Souls, check, Match, syncRequest */
+
 
 var Iconv = Meteor.npmRequire('iconv').Iconv,
     iconv = new Iconv('cp1251', 'utf8');
@@ -150,11 +152,12 @@ Azbuka._newSoulItem = function(item) {
 //
 // Return num of items so if 0 stop crawl next page
 Azbuka.search = function(options) {
+  let self = this;
   let {days, page, sex} = options;
 
   check(days, Number);
   check(page, Number);
-  check(sex, Match.OneOf(['female', 'male']));
+  check(sex, Match.OneOf('female', 'male'));
 
   var params = [
     'module=community',
@@ -162,7 +165,7 @@ Azbuka.search = function(options) {
     'send=ok',
     `country=${this.country}`,
     `days=${days}`,
-    `page=${page}`
+    `off=${page}`
   ];
 
   if (sex === 'female') {
@@ -181,7 +184,13 @@ Azbuka.search = function(options) {
   // TODO page should contain 20 items, warn if not
   var items = [];
 
-  $('table td').each(function(i, elem) {
+  // return if np items
+  if ($('.content table td').text().match(/запрос не дал результатов/i)) {
+    return [];
+  }
+
+  $('.content table td').each(function(i, elem) {
+
     var $e = $(this);
     var image = $e.find(SELECTOR_SEARCH_USER_IMG).attr('src'),
         isVisible = !! $e.find(SELECTOR_SEARCH_USER_HIDDEN_IMG).length,
@@ -192,7 +201,7 @@ Azbuka.search = function(options) {
     var id = (anketaLink || '').replace(/^.*\//, '');
 
     if (! name || !id) {
-      this.error({
+      self.error({
         info: 'Azbuka.fetch. Item w/o name or id, check html',
         html: $e.innerHTML,
       });
@@ -218,7 +227,7 @@ Azbuka.search = function(options) {
   });
 
   if (items.length !== 20 && isNextPage) {
-    this.error({
+    self.error({
       info: `Azbuka.fetch. Azbuka page have ${items.length} items but should 20, check HTML!`,
       html: html
     });
@@ -330,7 +339,7 @@ Azbuka.getProfile = function(options) {
         self.parseDate($(SELECTOR_PROFILE_OFFLINE_STATUS).text())
         : new Date();
 
-  var pHasInvisibleImages = $(maininfo).find(SELECTOR_PROFILE_INVISIBLE).length;
+  var pHasInvisibleImages = !!$(maininfo).find(SELECTOR_PROFILE_INVISIBLE).length;
   var pNumOfImages = pImages.length;
   if (pHasInvisibleImages) {
     let matches = html.match(/file=login">\s*(\d+)\s*фото<\/a>/i);
@@ -403,12 +412,22 @@ Azbuka.getProfile = function(options) {
   return profile;
 };
 
-var profile = Azbuka.getProfile({
-  azbukaProfile: 'zlata_99808',
-  authorized: false
-});
+//console.log('last 4 days', Azbuka.search({days: 4, page: 2, sex: 'male'}));
 
+// console.log('authiruzed', Azbuka.getProfile({
+//   azbukaProfile: 'viktorija_138093',
+//   authorized: true,
+// }));
 
-//var profile = Azbuka.search({days: 4, page: 0});
-console.log(profile);
-//Ольга, 26 лет, Россия, Санкт-Петербург и область, Санкт-Петербург
+// Azbuka.login('xxx', 'yy');
+
+// console.log('authiruzed', Azbuka.getProfile({
+//   azbukaProfile: 'zlata_99808',
+//   authorized: true,
+// }));
+
+// console.log('----------');
+// console.log(Azbuka.getProfile({
+//   azbukaProfile: 'zlata_99808',
+//   authorized: false,
+// }));
