@@ -147,10 +147,22 @@ Azbuka._newSoulItem = function(item) {
   }
 };
 
-// Search and add jobs for fetching images and profiles.
-// Append souls collection with new soul
-//
-// Return num of items so if 0 stop crawl next page
+/**
+ * Fetch new profiles
+ *
+ * @param {Object} options
+ * @param {Number} options.days - how far to search
+ * @param {Number} options.page - page of search result
+ * @param {String} sex - 'female' or 'male'. There no other way
+ * to get sex from azbuka profile, so need to fetch separately.
+ *
+ * @returns {Object[]} profiles - basic profile object
+ * @returns {String} profiles[]._id
+ * @returns {String} profiles[].name
+ * @returns {Boolean} profiles[].isVisible - does profile hidden or not
+ * @returns {String} profiles[].image - main profile avatar/img
+ * @returns {String} profiles[].sex - just copied value from options.sex
+ */
 Azbuka.search = function(options) {
   let self = this;
   let {days, page, sex} = options;
@@ -236,21 +248,23 @@ Azbuka.search = function(options) {
   return items;
 };
 
-/*
- * Fetch user  profile. Add images jobs.
- * Return Object or null if not foun. Object:
- * {
- *  invisibleImages: Boolean // True - Hidden profile
- *                           // You should download this with options.authorized  true
- *  numOfImages: Number  // number of images (even if invisibleImages is true)
- *  images: [String],
- *  name: String,
- *  loc: String,
- *  age: Number,
- *  views: Number,
- *  maininfo: String  // Html version of main info,
- *  lastSeen: Date,
- *  about: [Object] } // Key-value of about section
+/**
+ * Fetch user  profile.
+ *
+ * @param {Object} options
+ * @param {String} options.azbukaProfile profile Id
+ * @param {Boolean} options.authorized Profile is hidden and should use authorization for getting images info
+ *
+ * @returns {null|Object} profile - profile object or null if have problems
+ * @returns {Boolean} profile.invisibleImages - true if hidden profile.
+ * @returns {Number} profile.numOfImages
+ * @returns {String[]} profile.images
+ * @returns {String} profile.name
+ * @returns {String} profile.loc - location text
+ * @returns {Number} profile.age
+ * @returns {Number} profile.views
+ * @returns {Date} profile.lastSeen
+ * @returns {Object[]} profile.about - key-value of aobut section
  */
 Azbuka.getProfile = function(options) {
   var self = this;
