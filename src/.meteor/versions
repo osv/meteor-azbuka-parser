@@ -67,6 +67,7 @@ minimongo@1.0.10
 momentjs:moment@2.10.6
 mongo@1.1.2
 mongo-id@1.0.1
+mrt:later@1.6.1
 natestrauser:animate-css@3.4.0
 nemo64:bootstrap@3.3.5_2
 nemo64:bootstrap-data@3.3.5
@@ -98,5 +99,6 @@ underscore@1.0.4
 url@1.0.5
 useraccounts:core@1.12.4
 useraccounts:unstyled@1.12.4
+vsivsi:job-collection@1.2.3
 webapp@1.2.2
 webapp-hashing@1.0.5
