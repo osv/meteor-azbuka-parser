@@ -11,7 +11,9 @@
         <span class="status {{statusClass job.status}}">
           {{job.status}}
         </span>
-        {{>jobControl job=(wrapJob job collectionType)}}      
+        <span class="controls">
+          {{>jobControl job=(wrapJob job collectionType)}}
+        </span>
       </span>
     </div>
   </div>
