@@ -80,7 +80,11 @@ Template.jobControl.events({
 function jobAction(action, options) {
   return function(event, template) {
     var job = Template.currentData().job;
-
+    if (action === 'remove' || action === 'cancel') {
+      if (!window.confirm(action + '?')) {
+        return;
+      }
+    }
     if (job) {
       job[action](options);
     }

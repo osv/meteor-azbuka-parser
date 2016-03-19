@@ -24,3 +24,20 @@ Meteor.startup(function () {
   // Start the myJobs queue running
   CircleJobs.startJobServer();
 });
+
+Meteor.methods({
+  createUpdaterJob() {
+    console.log('x1');
+
+    if (Acl.isAdminById(this.userId)) {
+      console.log('x2');
+
+      CircleJobs.createUpdateJob();
+    }
+  },
+  createCleanUpJob() {
+    if (Acl.isAdminById(this.userId)) {
+      CircleJobs.createCleanUpJob();
+    }
+  }
+});

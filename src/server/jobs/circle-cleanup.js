@@ -5,7 +5,7 @@ Meteor.startup(function() {
   var queue;
 
   CircleJobs.createCleanUpJob = function() {
-    if (!CircleJobs.findOne({type: 'cleanup'})) {
+    if (!CircleJobs.findOne({type: 'cleanup', status: {$ne: 'completed'}})) {
       new Job(CircleJobs, 'cleanup', {}).repeat({
         schedule: later.parse.text('every 1 minutes')
       }).save({

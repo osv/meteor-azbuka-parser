@@ -7,7 +7,7 @@ Meteor.startup(function() {
   // create job for cleaning completed jobs in CircleJobs collection
   CircleJobs.createUpdateJob = function() {
     // create scheduled job if not exist
-    if (!CircleJobs.findOne({type: 'runScanner'})) {
+    if (!CircleJobs.findOne({type: 'runScanner', status: {$ne: 'completed'}})) {
       let job = new Job(CircleJobs, 'runScanner', {}),
           schedule = later.parse.text('every 1 minutes');
 

@@ -2,16 +2,40 @@
   <h1>Workers</h1>
   <row>
     <div class="col-md-6">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          Circle jobs
-        </div>
-        <div class="panel-body">
-          {{#each job in circleJobs}}
-          {{>jobItem collectionType='circle' job=job}}
-          {{/each}}
-        </div>
-      </div>
+      {{>circleJobControl}}
     </div>
   </row>
+</template>
+
+<template name="circleJobControl">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Circle jobs
+      <span class="pull-right">
+        <div class="dropdown">
+          <button class="btn btn-xs btn-default" type="button" data-toggle="dropdown">
+            <i class="glyphicon glyphicon-edit"></i>
+            <span class="caret"></span></button>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li><a class="js-create-scanner" href="#">Create scanner job</a></li>
+            <li><a class="js-create-cleaner" href="#">Create cleaner job</a></li>
+            <li class="divider"></li>
+            <li><a class="js-show-all-circle-jobs" href="">
+              Show all
+              {{#if isShowAllCircleJobs}}
+                <i class="glyphicon glyphicon-check pull-right"></i>
+              {{/if}}
+            </a></li>
+          </ul>
+        </div>
+      </span>
+    </div>
+    <div class="panel-body">
+      {{#each job in circleJobs}}
+        <div class="fade-in-job-item">
+          {{>jobItem collectionType='circle' job=job}}          
+        </div>
+      {{/each}}
+    </div>
+  </div>
 </template>
