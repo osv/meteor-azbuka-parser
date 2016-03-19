@@ -35,6 +35,7 @@ natestrauser:animate-css
 reactive-var
 check
 less
+momentjs:moment
 meteorhacks:npm
 
 npm-container

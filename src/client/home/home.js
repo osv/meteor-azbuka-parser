@@ -20,10 +20,11 @@ Template.home.events({
 
 Template.home.helpers({
   username() {
-    let user = Meteor.user(),
+    let user = Meteor.user() || {},
         profile = user.profile || {};
     return user.username || profile.name;
   },
+
   showLogin() {
     return showLogin.get();
   },

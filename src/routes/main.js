@@ -51,8 +51,11 @@ Router.route('/control', {
 
   controller: 'AdminController',
 
+  subscriptions() {
+    return Meteor.subscribe('circleJobs');
+  },
+
   data() {
     SEO.set({title: 'Control - ' + Meteor.App.NAME});
-    return Settings.findOne();
   }
 });

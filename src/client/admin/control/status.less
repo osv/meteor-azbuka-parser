@@ -1,0 +1,35 @@
+.btn(@color) {
+    background-color: @color !important;
+    border-color: darken(@color, 20%) !important;
+    color: #ffffff !important;
+    border-radius: 2px;
+}
+
+.status {
+    padding-left: 4px;
+    padding-right: 4px;
+    margin-right: 4px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+    &.grey {
+        .btn(#555);
+    }
+    &.blue {
+        .btn(#447);
+    }
+    &.black {
+        .btn(black);
+    }
+    &.default {
+        .btn(#333)
+    }
+    &.yellow {
+        .btn(#880)
+    }
+    &.red {
+        .btn(#800)
+    }
+    &.green {
+        .btn(#080)
+    }
+}

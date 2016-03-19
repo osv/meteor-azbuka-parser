@@ -7,3 +7,8 @@ Template.registerHelper('constant', function (what) {
 Template.registerHelper('isAdmin', function () {
   return Acl.isAdmin();
 });
+
+Template.registerHelper('eq', function (a, b) {
+  /* jshint -W116 */
+  return a == b;
+});

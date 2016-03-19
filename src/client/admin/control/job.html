@@ -1,0 +1,84 @@
+<template name="jobItem">
+  <div class="row job-item">
+    <div class="col-md-12">
+      <span title="{{job._id}}">
+        {{job.type}}
+      </span>
+      <span class="{{futurePast job.after}}">
+        {{timeFormatter job.after}}
+      </span>
+      <span class="pull-right">
+        <span class="status {{statusClass job.status}}">
+          {{job.status}}
+        </span>
+        {{>jobControl job=(wrapJob job collectionType)}}      
+      </span>
+    </div>
+  </div>
+</template>
+
+<template name="jobControl">
+  {{#if eq job.doc.status "waiting"}}
+    {{>readyNowButton}}    
+  {{/if}}
+  {{#if pausable job }}
+    {{>pauseButton}}
+  {{/if}}
+  {{#if eq job.doc.status "paused"}}
+    {{>resumeButton}}    
+  {{/if}}
+  {{#if restartable job}}
+    {{>restartButton}}
+  {{/if}}
+  {{#if eq job.doc.status "completed"}}
+    {{>rerunButton}}
+  {{/if}}
+  {{#if cancellable job}}
+    {{>cancelButton}}
+  {{/if}}
+  {{#if removable job}}
+    {{>removeButton}}
+  {{/if}}
+</template>
+
+<template name="pauseButton">
+  <button title="Pause" class="btn btn-xs btn-default js-job-pause">
+    <i class="glyphicon glyphicon-pause"></i>
+  </button>
+</template>
+
+<template name="resumeButton">
+  <button title="Resume job" class="btn btn-xs btn-info js-job-resume">
+    <i class="glyphicon glyphicon-play"></i>
+  </button>
+</template>
+
+<template name="restartButton">
+  <button title="Restart job" class="btn btn-xs btn-info js-job-restart">
+    <i class="glyphicon glyphicon-repeat"></i>
+  </button>
+</template>
+
+<template name="rerunButton">
+  <button title="Rerun job" class="btn btn-xs btn-primary js-job-rerun">
+    <i class="glyphicon glyphicon-refresh"></i>
+  </button>
+</template>
+
+<template name="cancelButton">
+  <button title="Cancel job" class="btn btn-xs btn-warning js-job-cancel">
+    <i class="glyphicon glyphicon-ban-circle"></i>
+  </button>
+</template>
+
+<template name="removeButton">
+  <button title="Remove job" class="btn btn-xs btn-danger js-job-remove">
+    <i class="glyphicon glyphicon-remove"></i>
+  </button>
+</template>
+
+<template name="readyNowButton">
+  <button title="Start now job" class="btn btn-xs btn-success js-job-ready">
+    <i class="glyphicon glyphicon-play"></i>
+  </button>
+</template>

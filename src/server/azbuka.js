@@ -78,9 +78,6 @@ Azbuka.login = function(login, password) {
       usedLogin: login
     });
   }
-
-  // var cookie
-  console.log(res);
 };
 
 Azbuka.parseDate = function(str) {
