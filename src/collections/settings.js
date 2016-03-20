@@ -19,11 +19,31 @@ var CredentialSchema = new SimpleSchema({
   },
 });
 
-var SettingsSchema = new SimpleSchema({
+var scrapSchema = new SimpleSchema({
   enable: {
     type: Boolean,
     defaultValue: false,
     label: 'Enable scrapping'
+  },
+  date: {
+    type: Date,
+    optional: true,
+    label: 'Time of last scrap. Used for get next scrap date depth computing.'
+  },
+  extraDays: {
+    optional: true,
+    type: Number,
+    defaultValue: 364,
+    max: 1000,
+    min: 0,
+    label: 'Extra days will be add to last scan "date", will be reset to 0 after next scrap done.'
+  },
+});
+
+var SettingsSchema = new SimpleSchema({
+  scrap: {
+    type: scrapSchema,
+    label: 'Scrap settings',
   },
 
   sex: {
