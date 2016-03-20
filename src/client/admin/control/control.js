@@ -1,5 +1,13 @@
 /*global CircleJobs, ReactiveVar, moment */
 
+var rvEditJob = new ReactiveVar();
+
+Template.control.helpers({
+  getJobData() {
+    return rvEditJob.get();
+  }
+});
+
 var rvShowAllCircleJob = new ReactiveVar();
 // Job control
 Template.circleJobControl.helpers({
@@ -21,5 +29,11 @@ Template.circleJobControl.events({
   },
   'click .js-show-all-circle-jobs'() {
     rvShowAllCircleJob.set(!rvShowAllCircleJob.get());
+  },
+  'click .js-edit-job'(e) {
+    rvEditJob.set({
+      collection: 'circle',
+      jobId: e.currentTarget.id
+    });
   }
 });

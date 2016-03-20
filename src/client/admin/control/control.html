@@ -3,6 +3,8 @@
   <row>
     <div class="col-md-6">
       {{>circleJobControl}}
+
+      {{>jobDetails jobData=getJobData}}
     </div>
   </row>
 </template>
@@ -32,7 +34,7 @@
     </div>
     <div class="panel-body">
       {{#each job in circleJobs}}
-        <div class="fade-in-job-item">
+        <div id="{{job._id}}" class="fade-in-job-item js-edit-job">
           {{>jobItem collectionType='circle' job=job}}          
         </div>
       {{/each}}

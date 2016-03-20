@@ -86,5 +86,31 @@
 </template>
 
 <template name="jobDetails">
-  details
+  {{#let job=getJob}}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Detail job information
+      </div>
+      <div class="panel-body">
+        {{#if job}}
+          {{>jobItem collectionType='circle' job=job}}
+          <div class="row">
+            <div class="col-md-12">
+              <div class="col-md-4">Repeats:</div><div class="col-md-4">{{numRepeats job}}</div>
+            </div>
+            <div class="col-md-12">
+              <div class="col-md-4">Retries:</div><div class="col-md-4">{{numRetries job}}</div>
+            </div>
+            <div class="col-md-12">
+              <div class="job-details-json">{{{prettyJson (filterJobData job)}}}</div>
+            </div>
+          </div>
+
+        {{else}}
+          Click on any job for edit
+        {{/if}}
+      </div>
+    </div>
+  {{/let}}
 </template>
+

@@ -7,7 +7,7 @@ Template.jobItem.helpers({
   // wrap job into Job (for use actions like "pause", etc)
   wrapJob(job, collectionType) {
     var collection = collectionType === 'circle' ? CircleJobs : null;
-    return collection ? Job(collection, job) : null;
+    return collection ? new Job(collection, job) : null;
   },
 
   timeFormatter(time) {
@@ -40,13 +40,6 @@ Template.jobItem.helpers({
       failed: 'red',
       completed: 'green'
     }[status];
-  },
-
-  numRepeats(job) {
-    return isInfinity(job.repeats);
-  },
-  numRetries(job) {
-    return isInfinity(job.retries);
   },
 });
 
@@ -119,6 +112,36 @@ Meteor.setInterval(function() {
   reactiveDate.set(new Date());
 }, TICK);
 
+/////////
+
+Template.jobDetails.helpers({
+  getJob() {
+    var jobData = this.jobData;
+    if (jobData && jobData.jobId) {
+      let collection = jobData.collection === 'circle' ? CircleJobs : null;
+      if (collection) {
+        return collection.findOne(jobData.jobId);
+      }
+    }
+  },
+
+  filterJobData(job) {
+    var copy = _.clone(job);
+    delete copy.repeatWait;
+    return copy;
+  },
+
+  numRepeats(job) {
+    return isInfinity(job.repeats);
+  },
+
+  numRetries(job) {
+    return isInfinity(job.retries);
+  },
+
+});
+
+/// helpers
 function isInfinity(val) {
   return (val > Job.forever - 7199254740935) ? '∞' : val;
 }
