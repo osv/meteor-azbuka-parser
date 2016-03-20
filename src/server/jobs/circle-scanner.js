@@ -1,4 +1,4 @@
-/*global CircleJobs, Job*/
+/*global CircleJobs, Job, console */
 
 Meteor.startup(function() {
   var later = CircleJobs.later;
@@ -33,13 +33,5 @@ Meteor.startup(function() {
       job.done();
       callback();
     }
-
-    CircleJobs.find({
-      type: 'runScanner',
-    }).observe({
-      changed: function(id, doc) {
-        console.log('changed', doc._id, doc.status);
-      }
-    });
   };
 });

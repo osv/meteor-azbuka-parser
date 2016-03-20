@@ -1,4 +1,4 @@
-/*global CircleJobs, ReactiveVar, moment */
+/*global CircleJobs, ReactiveVar */
 
 var rvEditJob = new ReactiveVar();
 

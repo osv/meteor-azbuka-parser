@@ -1,4 +1,4 @@
-/*global CircleJobs, Job */
+/*global CircleJobs, Job, console */
 
 Meteor.startup(function() {
   var later = CircleJobs.later;
@@ -11,6 +11,7 @@ Meteor.startup(function() {
       }).save({
         cancelRepeats: true
       });
+      console.log('Created scheduled clean job');
     }
   };
 
@@ -39,8 +40,6 @@ Meteor.startup(function() {
       if (ids.length > 0) {
         CircleJobs.removeJobs(ids);
       }
-      console.log('Removed ' + ids.length);
-
       job.done('Removed ' + ids.length + ' old jobs');
       return cb();
     }

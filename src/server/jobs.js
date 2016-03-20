@@ -1,4 +1,4 @@
-/*global Job, CircleJobs, Acl, console */
+/*global CircleJobs, Acl */
 
 Meteor.publish('circleJobs', function () {
   if (Acl.isAdminById(this.userId)) {
@@ -27,11 +27,7 @@ Meteor.startup(function () {
 
 Meteor.methods({
   createUpdaterJob() {
-    console.log('x1');
-
     if (Acl.isAdminById(this.userId)) {
-      console.log('x2');
-
       CircleJobs.createUpdateJob();
     }
   },

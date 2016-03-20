@@ -1,4 +1,4 @@
-/*global Errors,  Azbuka, Meteor, getSettings, console,  JobProfiles, JobImages, */
+/*global Errors, Azbuka, Meteor, console, JobProfiles, JobImages */
 /*global Souls, check, Match, syncRequest */
 
 
