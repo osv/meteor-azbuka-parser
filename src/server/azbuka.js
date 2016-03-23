@@ -193,13 +193,21 @@ Azbuka.search = function(options) {
   // TODO page should contain 20 items, warn if not
   var items = [];
 
+  var dataTableSelector = '#content table td';
+  var dataTable = $(dataTableSelector);
   // return if np items
-  if ($('.content table td').text().match(/запрос не дал результатов/i)) {
+  if (dataTable.text().match(/запрос не дал результатов/i)) {
     return [];
   }
 
-  $('.content table td').each(function(i, elem) {
+  if (!dataTable.length) {
+    self.error({
+      info: `Azbuka.fetch. No content "${dataTableSelector}"`,
+      html: html,
+    });
+  }
 
+  dataTable.each(function(i, elem) {
     var $e = $(this);
     var image = $e.find(SELECTOR_SEARCH_USER_IMG).attr('src'),
         isVisible = !! $e.find(SELECTOR_SEARCH_USER_HIDDEN_IMG).length,
@@ -423,7 +431,7 @@ Azbuka.getProfile = function(options) {
   return profile;
 };
 
-//console.log('last 4 days', Azbuka.search({days: 4, page: 2, sex: 'male'}));
+// console.log('last 4 days', Azbuka.search({days: 4, page: 2, sex: 'male'}));
 
 // console.log('authiruzed', Azbuka.getProfile({
 //   azbukaProfile: 'viktorija_138093',
