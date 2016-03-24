@@ -4,8 +4,9 @@ Meteor.startup(function() {
   var later = CircleJobs.later;
   var queue;
 
-  CircleJobs.createCleanUpJob = function() {
-    if (!CircleJobs.findOne({type: CircleJobs.TYPE_CLEANER_CIRCLES, status: {$ne: 'completed'}})) {
+  CircleJobs.createCleanUpCircleJob = function() {
+    var hasJob = CircleJobs.findOne({type: CircleJobs.TYPE_CLEANER_CIRCLES, status: {$ne: 'completed'}});
+    if (!hasJob) {
       new Job(CircleJobs, CircleJobs.TYPE_CLEANER_CIRCLES, {}).repeat({
         schedule: later.parse.text('every 1 minutes')
       })

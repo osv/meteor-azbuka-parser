@@ -28,7 +28,7 @@ Template.circleJobControl.events({
     Meteor.call('createUpdaterJob');
   },
   'click .js-create-cleaner'() {
-    Meteor.call('createCleanUpJob');
+    Meteor.call('createCleanUpCircleJob');
   },
   'click .js-show-all-jobs'() {
     var r = Template.instance().rvShowAll;
@@ -58,12 +58,6 @@ Template.fetchJobControl.helpers({
 });
 
 Template.fetchJobControl.events({
-  'click .js-create-scanner'() {
-    Meteor.call('createUpdaterJob');
-  },
-  'click .js-create-cleaner'() {
-    Meteor.call('createCleanUpJob');
-  },
   'click .js-show-all-jobs'() {
     var r = Template.instance().rvShowAll;
     r.set(!r.get());

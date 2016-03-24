@@ -15,7 +15,7 @@ Meteor.startup(function () {
 
   // ensure jobs exists
   CircleJobs.createUpdateJob();
-  CircleJobs.createCleanUpJob();
+  CircleJobs.createCleanUpCircleJob();
 
   // run worker on this node
   CircleJobs.startCleanupWorker();
@@ -31,9 +31,9 @@ Meteor.methods({
       CircleJobs.createUpdateJob();
     }
   },
-  createCleanUpJob() {
+  createCleanUpCircleJob() {
     if (Acl.isAdminById(this.userId)) {
-      CircleJobs.createCleanUpJob();
+      CircleJobs.createCleanUpCircleJob();
     }
   }
 });
