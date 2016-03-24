@@ -8,7 +8,11 @@ Meteor.startup(function() {
     if (!CircleJobs.findOne({type: 'cleanup', status: {$ne: 'completed'}})) {
       new Job(CircleJobs, 'cleanup', {}).repeat({
         schedule: later.parse.text('every 1 minutes')
-      }).save({
+      })
+        .retry({
+          retries: 1,
+          wait: 15 * 60 * 1000})  // 15 minutes between attempts
+        .save({
         cancelRepeats: true
       });
       console.log('Created scheduled clean job');
@@ -17,7 +21,7 @@ Meteor.startup(function() {
 
   CircleJobs.startCleanupWorker = function() {
     queue = CircleJobs.processJobs('cleanup', {
-      workTimeout: 60 * 1000
+      workTimeout: 5 * 60 * 1000
     }, processCleanUp);
 
     function processCleanUp(job, cb) {

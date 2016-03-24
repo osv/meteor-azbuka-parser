@@ -12,6 +12,9 @@ Meteor.startup(function() {
           schedule = later.parse.text('at 4:00');
 
       job.priority('normal')
+        .retry({
+          retries: 1,
+          wait: 60 * 60 * 1000})  // 1 hour between attempts
         .repeat({schedule: schedule})
         .save();
       console.log('Created scheduled job');
