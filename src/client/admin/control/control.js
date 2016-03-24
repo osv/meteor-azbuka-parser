@@ -8,16 +8,19 @@ Template.control.helpers({
   }
 });
 
-var rvShowAllCircleJob = new ReactiveVar();
 // Job control
+Template.circleJobControl.onCreated(function() {
+  this.rvShowAll = new ReactiveVar();
+});
+
 Template.circleJobControl.helpers({
-  circleJobs() {
-    var showAll = rvShowAllCircleJob.get(),
+  jobs() {
+    var showAll = Template.instance().rvShowAll.get(),
         query = showAll ? {} : {status: {$ne: 'completed'}};
     return CircleJobs.find(query, {sort: {type: 1, updated: -1}});
   },
 
-  isShowAllCircleJobs() { return rvShowAllCircleJob.get(); },
+  isShowAll() { return Template.instance().rvShowAll.get(); },
 });
 
 Template.circleJobControl.events({
@@ -28,7 +31,8 @@ Template.circleJobControl.events({
     Meteor.call('createCleanUpJob');
   },
   'click .js-show-all-circle-jobs'() {
-    rvShowAllCircleJob.set(!rvShowAllCircleJob.get());
+    var r = Template.instance().rvShowAll;
+    r.set(!r.get());
   },
   'click .js-edit-job'(e) {
     rvEditJob.set({

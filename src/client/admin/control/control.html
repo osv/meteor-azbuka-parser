@@ -24,7 +24,7 @@
             <li class="divider"></li>
             <li><a class="js-show-all-circle-jobs" href="">
               Show all
-              {{#if isShowAllCircleJobs}}
+              {{#if isShowAll}}
                 <i class="glyphicon glyphicon-check pull-right"></i>
               {{/if}}
             </a></li>
@@ -33,9 +33,9 @@
       </span>
     </div>
     <div class="panel-body">
-      {{#each job in circleJobs}}
+      {{#each job in jobs}}
         <div id="{{job._id}}" class="fade-in-job-item js-edit-job">
-          {{>jobItem collectionType='circle' job=job}}          
+          {{>jobItem collectionType='circle' job=job}}
         </div>
       {{/each}}
     </div>
