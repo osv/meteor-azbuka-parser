@@ -3,6 +3,9 @@
     <div class="col-md-12">
       <span title="{{job._id}}">
         {{job.type}}
+        {{#if eq job.type 'runScanner'}}
+        <span title="Completed">({{job.progress.completed}})</span>
+        {{/if}}
       </span>
       <span class="{{futurePast job.after}}">
         {{timeFormatter job.after}}
@@ -21,13 +24,13 @@
 
 <template name="jobControl">
   {{#if eq job.doc.status "waiting"}}
-    {{>readyNowButton}}    
+    {{>readyNowButton}}
   {{/if}}
   {{#if pausable job }}
     {{>pauseButton}}
   {{/if}}
   {{#if eq job.doc.status "paused"}}
-    {{>resumeButton}}    
+    {{>resumeButton}}
   {{/if}}
   {{#if restartable job}}
     {{>restartButton}}
@@ -113,4 +116,3 @@
     </div>
   {{/let}}
 </template>
-
