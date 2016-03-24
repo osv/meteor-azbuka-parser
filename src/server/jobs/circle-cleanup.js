@@ -5,8 +5,8 @@ Meteor.startup(function() {
   var queue;
 
   CircleJobs.createCleanUpJob = function() {
-    if (!CircleJobs.findOne({type: 'cleanup', status: {$ne: 'completed'}})) {
-      new Job(CircleJobs, 'cleanup', {}).repeat({
+    if (!CircleJobs.findOne({type: CircleJobs.TYPE_CLEANER_CIRCLES, status: {$ne: 'completed'}})) {
+      new Job(CircleJobs, CircleJobs.TYPE_CLEANER_CIRCLES, {}).repeat({
         schedule: later.parse.text('every 1 minutes')
       })
         .retry({
@@ -20,7 +20,7 @@ Meteor.startup(function() {
   };
 
   CircleJobs.startCleanupWorker = function() {
-    queue = CircleJobs.processJobs('cleanup', {
+    queue = CircleJobs.processJobs(CircleJobs.TYPE_CLEANER_CIRCLES, {
       workTimeout: 5 * 60 * 1000
     }, processCleanUp);
 

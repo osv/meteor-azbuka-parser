@@ -7,8 +7,8 @@ Meteor.startup(function() {
   // create job for cleaning completed jobs in CircleJobs collection
   CircleJobs.createUpdateJob = function() {
     // create scheduled job if not exist
-    if (!CircleJobs.findOne({type: 'runScanner', status: {$ne: 'completed'}})) {
-      let job = new Job(CircleJobs, 'runScanner', {}),
+    if (!CircleJobs.findOne({type: CircleJobs.TYPE_SCANNER, status: {$ne: 'completed'}})) {
+      let job = new Job(CircleJobs, CircleJobs.TYPE_SCANNER, {}),
           schedule = later.parse.text('at 4:00');
 
       job.priority('normal')
@@ -23,7 +23,7 @@ Meteor.startup(function() {
 
   // azbuka profile update
   CircleJobs.startUpdaterWorker = function() {
-    queue = CircleJobs.processJobs('runScanner', {
+    queue = CircleJobs.processJobs(CircleJobs.TYPE_SCANNER, {
       workTimeout: 30 * 60 * 1000,
     }, worker);
   };
