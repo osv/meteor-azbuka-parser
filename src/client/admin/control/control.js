@@ -30,7 +30,7 @@ Template.circleJobControl.events({
   'click .js-create-cleaner'() {
     Meteor.call('createCleanUpJob');
   },
-  'click .js-show-all-circle-jobs'() {
+  'click .js-show-all-jobs'() {
     var r = Template.instance().rvShowAll;
     r.set(!r.get());
   },
