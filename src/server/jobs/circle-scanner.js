@@ -1,6 +1,6 @@
-/*global CircleJobs, Job, console */
+/*global CircleJobs, Job, getSettings, console */
 
-Meteor.startup(function() {
+Meteor.startup(function() { 
   var later = CircleJobs.later;
   var queue;
 
@@ -9,7 +9,7 @@ Meteor.startup(function() {
     // create scheduled job if not exist
     if (!CircleJobs.findOne({type: 'runScanner', status: {$ne: 'completed'}})) {
       let job = new Job(CircleJobs, 'runScanner', {}),
-          schedule = later.parse.text('every 1 minutes');
+          schedule = later.parse.text('at 4:00');
 
       job.priority('normal')
         .repeat({schedule: schedule})
@@ -27,11 +27,67 @@ Meteor.startup(function() {
     function worker(job, callback) {
       // Only called when there is a valid job
       console.log('processing job', job.doc._id);
-      Meteor._sleepForMs(1000);
+      var completedAccum = 0;
+
+      var setting = getSettings(),
+          gender = setting.sex,
+          scrapOptions = setting.scrap,
+          isEnabled = scrapOptions.enable,
+          lastScanDate = scrapOptions.date || new Date(),
+          now = new Date(),
+          diffDays = (now - lastScanDate) / (24 * 60 * 60 * 1000),
+          extraDays = scrapOptions.extraDays,
+          daysForScan = Math.floor(diffDays + extraDays +1);
+
+      if (!isEnabled) {
+        job.done('Scrap is not enabled, skip');
+      }
+
+      if (daysForScan < 1) {
+        job.done('Looks job planned in future: ' + Math.abs(daysForScan));
+      }
+
+      try {
+        if (gender === 'any' || gender === 'female') {
+          process(daysForScan, 'female', logProgressFn);
+        }
+        if (gender === 'any' || gender === 'female') {
+          process(daysForScan, 'male', logProgressFn);
+        }
+      } catch (e) {
+        job.fail(e);
+      } finally {
+        job.done();
+      }
+      
       console.log('finish job', job.doc._id);
 
-      job.done();
       callback();
+      return;
+
+      // help funtion for progressing job
+      function logProgressFn(numOfProfiles) {
+        completedAccum = completedAccum + numOfProfiles;
+        job.progress(completedAccum, completedAccum + 1);
+      }
+
     }
   };
+
+  function process(days, sex, progressFn) {
+    console.log('process', sex);
+
+    var page = 1;
+    var result = [];
+    do {
+//      result = Azbuka.search({days: days, page: page, sex: sex});
+      page++;
+      Meteor._sleepForMs(2000);
+      progressFn(3);
+
+    } while(result.length);
+    
+  }
 });
+
+
