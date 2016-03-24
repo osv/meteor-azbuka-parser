@@ -43,6 +43,7 @@ var scrapSchema = new SimpleSchema({
 var SettingsSchema = new SimpleSchema({
   scrap: {
     type: scrapSchema,
+    optional: true,
     label: 'Scrap settings',
   },
 
