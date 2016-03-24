@@ -2,6 +2,9 @@
   <h1>Workers</h1>
   <row>
     <div class="col-md-6">
+      {{>fetchJobControl}}
+    </div>
+    <div class="col-md-6">
       {{>circleJobControl}}
 
       {{>jobDetails jobData=getJobData}}
@@ -36,6 +39,36 @@
       {{#each job in jobs}}
         <div id="{{job._id}}" class="fade-in-job-item js-edit-job">
           {{>jobItem collectionType='circle' job=job}}
+        </div>
+      {{/each}}
+    </div>
+  </div>
+</template>
+
+<template name="fetchJobControl">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Fetch jobs
+      <span class="pull-right">
+        <div class="dropdown">
+          <button class="btn btn-xs btn-default" type="button" data-toggle="dropdown">
+            <i class="glyphicon glyphicon-edit"></i>
+            <span class="caret"></span></button>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li><a class="js-show-all-jobs" href="">
+              Show all
+              {{#if isShowAll}}
+                <i class="glyphicon glyphicon-check pull-right"></i>
+              {{/if}}
+            </a></li>
+          </ul>
+        </div>
+      </span>
+    </div>
+    <div class="panel-body">
+      {{#each job in jobs}}
+        <div id="{{job._id}}" class="fade-in-job-item js-edit-job">
+          {{>jobItem collectionType='fetch' job=job}}
         </div>
       {{/each}}
     </div>
