@@ -55,6 +55,10 @@
             <i class="glyphicon glyphicon-edit"></i>
             <span class="caret"></span></button>
           <ul class="dropdown-menu dropdown-menu-right">
+            <li><a class="js-toggle-add-jobs" href="">
+              Add job manually
+            </a></li>
+
             <li><a class="js-show-all-jobs" href="">
               Show all
               {{#if isShowAll}}
@@ -66,6 +70,18 @@
       </span>
     </div>
     <div class="panel-body">
+      {{#if isShowAddJob}}
+        <div class="row">
+          <div class="form-group col-md-12">
+            <div class="input-group">
+              <div class="input-group-addon">Add profile jobs</div>
+              <input type="text"
+                     class="form-control js-profiles-input"
+                     placeholder="coma-separated profile IDs. Press enter to add">
+            </div>
+          </div>
+        </div>
+      {{/if}}
       {{#each job in jobs}}
         <div id="{{job._id}}" class="fade-in-job-item js-edit-job">
           {{>jobItem collectionType='fetch' job=job}}

@@ -45,6 +45,7 @@ Template.circleJobControl.events({
 // Fetch control
 Template.fetchJobControl.onCreated(function() {
   this.rvShowAll = new ReactiveVar();
+  this.rvShowAddJob = new ReactiveVar();
 });
 
 Template.fetchJobControl.helpers({
@@ -55,9 +56,14 @@ Template.fetchJobControl.helpers({
   },
 
   isShowAll() { return Template.instance().rvShowAll.get(); },
+  isShowAddJob() { return Template.instance().rvShowAddJob.get(); },
 });
 
 Template.fetchJobControl.events({
+  'click .js-toggle-add-jobs'() {
+    var r = Template.instance().rvShowAddJob;
+    r.set(!r.get());
+  },
   'click .js-show-all-jobs'() {
     var r = Template.instance().rvShowAll;
     r.set(!r.get());
@@ -67,5 +73,12 @@ Template.fetchJobControl.events({
       collection: 'fetch',
       jobId: e.currentTarget.id
     });
+  },
+  'keypress .js-profiles-input'(e) {
+    if (e.charCode === 13) {
+      let profilesAsText = e.currentTarget.value;
+      Meteor.call('createNewProfileJobs', profilesAsText);
+      e.currentTarget.value = '';
+    }
   }
 });

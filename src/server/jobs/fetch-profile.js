@@ -5,7 +5,7 @@ Meteor.startup(function() {
   FetchJobs.createProfileJob = function(profileId) {
     var hasJob = FetchJobs.findOne({
       type: FetchJobs.TYPE_PROFILE_FETCH,
-      profileId: profileId,
+      'data.profileId': profileId,
       status: {$ne: 'completed'}
     });
 
@@ -23,8 +23,6 @@ Meteor.startup(function() {
         .save();
     }
   };
-
- // FetchJobs.createProfileJob('zlata_99808');
 
   FetchJobs.startProfileWorker = function() {
     FetchJobs.processJobs(FetchJobs.TYPE_PROFILE_FETCH, {
