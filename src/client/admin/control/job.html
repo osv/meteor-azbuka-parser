@@ -3,9 +3,14 @@
     <div class="col-md-12">
       <span title="{{job._id}}">
         {{job.type}}
+
         {{#if eq job.type 'runScanner'}}
         <span title="Completed">({{job.progress.completed}})</span>
         {{/if}}
+        {{#if eq job.type 'profile'}}
+        <span title="Profile id">({{job.data.profileId}})</span>
+        {{/if}}
+
       </span>
       <span class="{{futurePast job.after}}">
         {{timeFormatter job.after}}
