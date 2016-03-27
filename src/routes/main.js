@@ -52,7 +52,10 @@ Router.route('/control', {
   controller: 'AdminController',
 
   subscriptions() {
-    return Meteor.subscribe('circleJobs');
+    return [
+      Meteor.subscribe('circleJobs'),
+      Meteor.subscribe('fetchJobs')
+    ];
   },
 
   data() {

@@ -1,4 +1,4 @@
-/*global ReactiveVar, moment, Job, CircleJobs */
+/*global ReactiveVar, moment, Job, CircleJobs, FetchJobs */
 
 const TICK = 2500;
 var reactiveDate = new ReactiveVar(new Date());
@@ -6,7 +6,7 @@ var reactiveDate = new ReactiveVar(new Date());
 Template.jobItem.helpers({
   // wrap job into Job (for use actions like "pause", etc)
   wrapJob(job, collectionType) {
-    var collection = collectionType === 'circle' ? CircleJobs : null;
+    var collection = collectionType === 'circle' ? CircleJobs : FetchJobs;
     return collection ? new Job(collection, job) : null;
   },
 
@@ -118,7 +118,7 @@ Template.jobDetails.helpers({
   getJob() {
     var jobData = this.jobData;
     if (jobData && jobData.jobId) {
-      let collection = jobData.collection === 'circle' ? CircleJobs : null;
+      let collection = jobData.collection === 'circle' ? CircleJobs : FetchJobs;
       if (collection) {
         return collection.findOne(jobData.jobId);
       }
