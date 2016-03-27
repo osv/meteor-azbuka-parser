@@ -59,7 +59,7 @@ Meteor.startup(function() {
         process(daysForScan, 'male', logProgressFn);
       }
     } catch (e) {
-      job.fail(e);
+      job.fail('' + e);
     } finally {
       job.done();
     }
