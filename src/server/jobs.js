@@ -1,8 +1,15 @@
-/*global CircleJobs, Acl */
+/*global CircleJobs, Acl, FetchJobs */
 
 Meteor.publish('circleJobs', function () {
   if (Acl.isAdminById(this.userId)) {
     return CircleJobs.find({});
+  }
+  return [];
+});
+
+Meteor.publish('fetchJobs', function () {
+  if (Acl.isAdminById(this.userId)) {
+    return FetchJobs.find({});
   }
   return [];
 });
@@ -13,6 +20,10 @@ Meteor.startup(function () {
     admin: Acl.isAdminById
   });
 
+  FetchJobs.allow({
+    admin: Acl.isAdminById
+  });
+
   // ensure jobs exists
   CircleJobs.createUpdateJob();
   CircleJobs.createCleanUpCircleJob();
@@ -20,9 +31,11 @@ Meteor.startup(function () {
   // run worker on this node
   CircleJobs.startCleanupWorker();
   CircleJobs.startUpdaterWorker();
+  FetchJobs.startProfileWorker();
 
   // Start the myJobs queue running
   CircleJobs.startJobServer();
+  FetchJobs.startJobServer();
 });
 
 Meteor.methods({
