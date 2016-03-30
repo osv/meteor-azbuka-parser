@@ -1,8 +1,10 @@
-/*global Job, FetchJobs, getSettings, Azbuka */
+/*global Job, FetchJobs, getSettings, Azbuka, check */
 Meteor.startup(function() {
 
   // create job for updating azbuka's profile
   FetchJobs.createProfileJob = function(profileId) {
+    check(profileId, String);
+
     var hasJob = FetchJobs.findOne({
       type: FetchJobs.TYPE_PROFILE_FETCH,
       'data.profileId': profileId,

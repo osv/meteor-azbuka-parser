@@ -76,14 +76,6 @@ var SoulSchema = new SimpleSchema({
     optional: true
   },
 
-  update: {
-    type: Boolean,
-    optional: true,
-    defaultValue: true,
-    label: 'Update this profile next time'
-  },
-
-  // Force value to be current date (on server) upon update
   updatedAt: {
     type: Date,
     optional: true,

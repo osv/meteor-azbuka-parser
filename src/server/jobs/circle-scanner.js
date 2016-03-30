@@ -1,4 +1,4 @@
-/*global CircleJobs, Job, getSettings, console */
+/*global CircleJobs, FetchJobs, Job, getSettings, Souls, Azbuka, console, Settings */
 
 Meteor.startup(function() {
   var later = CircleJobs.later;
@@ -40,28 +40,27 @@ Meteor.startup(function() {
         lastScanDate = scrapOptions.date || new Date(),
         now = new Date(),
         diffDays = (now - lastScanDate) / (24 * 60 * 60 * 1000),
-        extraDays = scrapOptions.extraDays,
+        extraDays = scrapOptions.extraDays || 0,
         daysForScan = Math.floor(diffDays + extraDays + 1);
 
     if (!isEnabled) {
       job.done('Scrap is not enabled, skip');
-    }
-
-    if (daysForScan < 1) {
+    } else if (daysForScan < 1) {
       job.done('Looks job planned in future: ' + Math.abs(daysForScan));
-    }
-
-    try {
-      if (gender === 'any' || gender === 'female') {
-        process(daysForScan, 'female', logProgressFn);
+    } else {
+      try {
+        if (gender === 'any' || gender === 'female') {
+          process(daysForScan, 'female', logProgressFn);
+        }
+        if (gender === 'any' || gender === 'female') {
+          process(daysForScan, 'male', logProgressFn);
+        }
+      } catch (e) {
+        job.fail('' + e);
+      } finally {
+        Settings.update(setting._id, {$set: {'scrap.date': new Date()}});
+        job.done();
       }
-      if (gender === 'any' || gender === 'female') {
-        process(daysForScan, 'male', logProgressFn);
-      }
-    } catch (e) {
-      job.fail('' + e);
-    } finally {
-      job.done();
     }
 
     console.log('finish job', job.doc._id);
@@ -77,12 +76,30 @@ Meteor.startup(function() {
   } // worker
 
   function process(days, sex, progressFn) {
-    console.log('process', sex);
-
     var page = 1;
     var result = [];
     do {
-      //      result = Azbuka.search({days: days, page: page, sex: sex});
+      result = Azbuka.search({days: days, page: page, sex: sex});
+
+      result.forEach(function(item) {
+        // create/update new user
+        var profileId = item._id;
+        var soul = {
+          $setOnInsert: _.pick(item, '_id', 'name', 'visible', 'sex'),
+          $addToSet: {
+            images: item.imageId
+          }
+        };
+
+        Souls.upsert(profileId, soul);
+
+        // create update profile job
+        FetchJobs.createProfileJob(profileId);
+        
+        // TODO: add image job for {item._id, item.imageId}
+      });
+
+      
       page++;
       Meteor._sleepForMs(2000);
       progressFn(3);
@@ -91,5 +108,4 @@ Meteor.startup(function() {
 
   }
 });
-
 
