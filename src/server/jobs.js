@@ -52,9 +52,11 @@ Meteor.methods({
   createNewProfileJobs(profilesAsText) {
     check(profilesAsText, String);
 
-    profilesAsText.split(/,/).map(function(s) {
+    profilesAsText.split(/[, ]+/).map(function(s) {
       var profileId = s.trim();
-      FetchJobs.createProfileJob(profileId);
+      if (profileId) {
+        FetchJobs.createProfileJob(profileId);
+      }
     });
   }
 });
