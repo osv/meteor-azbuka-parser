@@ -262,6 +262,7 @@ Azbuka.search = function(options) {
  *
  * @returns {null|Object} profile - profile object or null if have problems
  * @returns {Boolean} profile.invisibleImages - true if hidden profile.
+ * @returns {Boolean} profile.invisiblImage4Request - true if hidden profile and you need request friend to see photo.
  * @returns {Number} profile.numOfImages
  * @returns {String[]} profile.images
  * @returns {String} profile.name
@@ -359,13 +360,17 @@ Azbuka.getProfile = function(options) {
         : new Date();
 
   var pHasInvisibleImages = !!$(maininfo).find(SELECTOR_PROFILE_INVISIBLE).length;
+  var pHasInvisiblImage4Request = !!html.match(/фото доступен только для избранников этого участника/i);
   var pNumOfImages = pImages.length;
-  if (pHasInvisibleImages) {
-    let matches = html.match(/file=login">\s*(\d+)\s*фото<\/a>/i);
+  if (pHasInvisiblImage4Request || pHasInvisibleImages) {
+    let matches = html.match(/file=login>\s*(\d+)\s*фото<\/a>/i) ||
+          html.match(/scrollbars=yes'\)">\s*(\d+)\s*фото<\/a>/i) || // dima_167123
+          html.match(/>\s*(\d+)\s*фото<\/a>/i);
     if (!matches) {
       self.error({
         info: `${ERROR_TYPE} Profile have hidden images but cant find count`,
         desc: 'Looks here no url \"<a href="/znakomstva/index.php?module=community&amp;file=login">123 фото</a>\"',
+        html: html,
         profileId: azbukaProfile,
       });
     }
@@ -426,6 +431,7 @@ Azbuka.getProfile = function(options) {
     lastSeen: pLastseen,
     about: pAbout,
     invisibleImages: pHasInvisibleImages,
+    invisiblImage4Request: pHasInvisiblImage4Request,
     numOfImages: pNumOfImages
   };
   return profile;
