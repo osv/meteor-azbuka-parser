@@ -36,7 +36,7 @@ Meteor.startup(function() {
     var setting = getSettings(),
         gender = setting.sex,
         scrapOptions = setting.scrap,
-        isEnabled = scrapOptions.enable,
+        isEnabled = scrapOptions.enableScanner,
         lastScanDate = scrapOptions.date || new Date(),
         now = new Date(),
         diffDays = (now - lastScanDate) / (24 * 60 * 60 * 1000),

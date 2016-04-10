@@ -1,4 +1,4 @@
-/*global Job, FetchJobs, getSettings, Azbuka, check */
+/*global Job, FetchJobs, getSettings, Azbuka, check, Souls, Settings  */
 Meteor.startup(function() {
 
   // create job for updating azbuka's profile
@@ -37,13 +37,13 @@ Meteor.startup(function() {
   function worker(job, callback) {
     console.log('processing profile job');
 
-    console.log(job);
+    var res;
     try {
-      fetchProfile(job);
+      res = fetchProfile(job);
     } catch (e) {
       job.fail('' + e);
     } finally {
-      job.done();
+      job.done(res);
     }
     callback();
   }
@@ -58,9 +58,28 @@ Meteor.startup(function() {
 
     check(profileId, String);
 
+    var soul = Souls.findOne(profileId);
+    if (!soul) {
+      return `profile "${profileId}" not found in Souls collection, skip.`;
+    }
+
+    // ensure time between update was passed
+    var setting = Settings.findOne({}, {fields: {'scrap.daysUpdateWait': 1}}) || {},
+        scrapSetting = setting.scrap || {},
+        daysUpdateWait = scrapSetting.daysUpdateWait || 0,
+        now = new Date(),
+        lastUpdated = +soul.updatedAt || 0,
+        diffUpdateDays = Math.floor((now - lastUpdated) / (24 * 60 * 60 * 1000));
+
+    if (diffUpdateDays < daysUpdateWait) {
+      let msg = `Request update profile "${profileId}" too soon, ` +
+            `passed only ${diffUpdateDays} days (need ${daysUpdateWait})`;
+      return msg;
+    }
+
     var data = Azbuka.getProfile(query);
 
-    // auth required for view profile images?
+    // auth required for view profile images and no need request friend to see photo?
     if (data.invisibleImages) {
       // set flag that we need fetch profile usin auth cookie
       query.authorized = true;
@@ -71,6 +90,7 @@ Meteor.startup(function() {
       // first run, no cookie?
       if (!loggedIn) {
         job.log(`Try login into azbuka`);
+
         doLogin();
         didLogin = true;
         // now try get profile data again
@@ -85,12 +105,12 @@ Meteor.startup(function() {
         data = Azbuka.getProfile(query);
       }
 
-      if (data.invisibleImages) {
+      if (data.invisibleImages && !data.invisiblImage4Request) {
         throw new Error('Login was performed but still no images!');
       }
-
-      saveProfileData(profileId, data);
     }
+    saveProfileData(profileId, data);
+
   }
 
   function doLogin() {

@@ -20,10 +20,25 @@ var CredentialSchema = new SimpleSchema({
 });
 
 var scrapSchema = new SimpleSchema({
-  enable: {
+  enableScanner: {
     type: Boolean,
     defaultValue: false,
-    label: 'Enable scrapping'
+    label: 'Enable scrapping for users'
+  },
+  enableProfile: {
+    type: Boolean,
+    defaultValue: false,
+    label: 'Enable profile fetcher'
+  },
+  enableImage: {
+    type: Boolean,
+    defaultValue: false,
+    label: 'Enable image (avatar) fetcher'
+  },
+  daysUpdateWait: {
+    type: Number,
+    defaultValue: 3,
+    label: 'Num of days delay between update same profile'
   },
   date: {
     type: Date,
