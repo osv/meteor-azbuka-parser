@@ -349,7 +349,7 @@ Azbuka.getProfile = function(options) {
   });
 
   // num of views
-  var pViews;
+  var pViews = 0;
   if (html.match(/просмотров анкеты:\s(\d+)/)) {
     pViews = RegExp.$1;
   }
@@ -425,8 +425,8 @@ Azbuka.getProfile = function(options) {
     images: pImages,
     name: pName,
     loc: pLocation,
-    age: pAge,
-    views: pViews,
+    age: +pAge,
+    views: +pViews,
     maininfo: maininfo.html(),
     lastSeen: pLastseen,
     about: pAbout,
