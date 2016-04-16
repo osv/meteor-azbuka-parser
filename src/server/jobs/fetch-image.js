@@ -15,7 +15,7 @@ Meteor.startup(function() {
 
     if (!hasJob) {
       let job = new Job(FetchJobs,
-                        FetchJobs.TYPE_PROFILE_FETCH,
+                        FetchJobs.TYPE_IMAGE_FETCH,
                         {imageId: imageId});
 
       job.priority('normal')

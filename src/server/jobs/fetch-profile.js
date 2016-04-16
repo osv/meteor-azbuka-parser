@@ -110,10 +110,13 @@ Meteor.startup(function() {
       }
     }
     saveProfileData(profileId, data);
-    if (data.images) {
+
+    if (! _.isEmpty(data.images)) {
+      let soul = Souls.findOne(profileId, {fields: {'images': 1}}) || {},
+          images = soul.images;
       _.each(data.images, function addImageJob(imageId) {
         // TODO: create job for fetch image
-
+        FetchJobs.createImageFetchJob(imageId);
       })
     }
 

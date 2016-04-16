@@ -10,6 +10,10 @@ Template.jobItem.helpers({
     return collection ? new Job(collection, job) : null;
   },
 
+  TYPE_SCANNER: () => CircleJobs.TYPE_SCANNER,
+  TYPE_PROFILE_FETCH: ()=> FetchJobs.TYPE_PROFILE_FETCH,
+  TYPE_IMAGE_FETCH: ()=> FetchJobs.TYPE_IMAGE_FETCH,
+
   timeFormatter(time) {
     var now;
     now = reactiveDate.get();

@@ -4,11 +4,14 @@
       <span title="{{job._id}}">
         {{job.type}}
 
-        {{#if eq job.type 'runScanner'}}
+        {{#if eq job.type TYPE_SCANNER}}
         <span title="Completed">({{job.progress.completed}})</span>
         {{/if}}
-        {{#if eq job.type 'profile'}}
+        {{#if eq job.type TYPE_PROFILE_FETCH}}
         <span title="Profile id">({{job.data.profileId}})</span>
+        {{/if}}
+        {{#if eq job.type TYPE_IMAGE_FETCH}}
+        (<span class="truncated" title="image file name">{{job.data.imageId}}</span>)
         {{/if}}
 
       </span>
