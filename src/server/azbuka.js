@@ -380,6 +380,7 @@ Azbuka.getProfile = function(options) {
   var pAbout = {};
   $('.about-item').each(function() {
     var el = $(this).clone();
+    var elText = el.text();
     var type = el.find('.about-type').first().text();
     var value = el.remove('.about-type').find('.about-text').text();
 
@@ -389,6 +390,12 @@ Azbuka.getProfile = function(options) {
         html: $(this).html(),
         profileId: azbukaProfile
       });
+    }
+
+    var [, testRate, testQuestions] = elText.match(/(\d+)%\s+из\s+(\d+)\s+вопрос/) || [];
+    if (testRate) {
+      pAbout['Test rate (%)'] = testRate;
+      pAbout['Tests'] = testQuestions;
     }
 
     if (type.indexOf('Рост') !== -1 ||
