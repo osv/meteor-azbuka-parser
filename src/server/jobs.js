@@ -32,6 +32,7 @@ Meteor.startup(function () {
   CircleJobs.startCleanupWorker();
   CircleJobs.startUpdaterWorker();
   FetchJobs.startProfileWorker();
+  FetchJobs.startImageFetcherWorker();
 
   // Start the myJobs queue running
   CircleJobs.startJobServer();

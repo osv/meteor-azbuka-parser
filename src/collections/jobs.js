@@ -10,3 +10,4 @@ CircleJobs.TYPE_CLEANER_CIRCLES = 'cleanupCircles';
 // Job collection for repeatable jobs
 FetchJobs = new JobCollection('fetcher');
 FetchJobs.TYPE_PROFILE_FETCH = 'profile';
+FetchJobs.TYPE_IMAGE_FETCH = 'image';
