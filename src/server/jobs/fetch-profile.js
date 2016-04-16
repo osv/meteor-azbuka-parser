@@ -20,7 +20,7 @@ Meteor.startup(function() {
       job.priority('normal')
         .retry({
           retries: 1,
-          wait: 15 * 60 * 1000})  // 15 minutes between attempts
+          wait: 3 * 60 * 60 * 1000})  // 3h between attempts
         .delay(30 * 60 * 1000)    // Wait an hour before first try
         .save();
     }
@@ -110,6 +110,12 @@ Meteor.startup(function() {
       }
     }
     saveProfileData(profileId, data);
+    if (data.images) {
+      _.each(data.images, function addImageJob(imageId) {
+        // TODO: create job for fetch image
+
+      })
+    }
 
   }
 
@@ -127,7 +133,95 @@ Meteor.startup(function() {
     loggedIn = true;
   }
 
-  function saveProfileData(profileId, data) {
-    console.log(`profile ${profileId}`, data);
+  function saveProfileData(soulId, data) {
+    const FIELDS_NO_HISTORY = ['views', 'lastSeen', 'mainInfo',
+                               'invisiblImage4Request', 'invisibleImages'];
+    const FIELDS_HISTORY = ['name', 'age', 'loc'];
+
+    var soul = Souls.findOne(soulId),
+        firtTime = ! soul.about, // when  first  time profile  updated,  usually
+                                 // when no 'about'
+        soulAbout = soul.about || {},
+        now = new Date(),
+        modifiers = {
+          $set: {updatedAt: now}
+        },
+        defaultHistoryModVal = { // add to $push if need
+          history: {
+            $each: [],
+            $slice: -2000,
+          }
+        };
+
+    FIELDS_NO_HISTORY.forEach(function diff(fieldName) {
+      var fSaved = soul[fieldName],
+          fNew = data[fieldName];
+      if (fNew != fSaved) {
+        modifiers.$set[fieldName] = fNew;
+      }
+    });
+
+    // diff and add to history old value if need
+    FIELDS_HISTORY.forEach(function diffAndMkHistory(fieldName) {
+      var fSaved = soul[fieldName],
+          fNew = data[fieldName];
+      if (fNew != fSaved && fNew) {
+        modifiers.$set[fieldName] = fNew;
+        addHistory(fSaved, fieldName, firtTime);
+      }
+    });
+
+    // diff and add to history old value if need
+    // saved field 'about' of soul is: { key, val, when}
+    // check if modified and use $set to set all array.
+    {
+      let aboutByKey = _.indexBy(soul.about, 'key'),
+          modifiedAbout = false;
+
+      _.each(data.about, function diffAboutAndMkHistory(newVal, key) {
+        if ((''+(aboutByKey[key] || {}).val) !== (''+newVal) && newVal) {
+          modifiedAbout = true;
+          var oldVal = aboutByKey[key];
+          aboutByKey[key] = {
+            key: key,
+            val: newVal,
+            when: now
+          };
+          addHistory(newVal, key, firtTime);
+        }
+
+        if (modifiedAbout) {
+          modifiers.$set.about = _.values(aboutByKey);
+        }
+      });
+    }
+
+    // extend images if need
+    {
+      let currentImages = soul.images || [],
+          newImages = _.uniq((data.images || []).concat(currentImages)),
+          haveNewImages = !!_.difference(newImages, currentImages).length;
+
+      if (haveNewImages) {
+        modifiers.$set.images = newImages;
+      }
+    }
+
+    // console.log('update $set:', modifiers.$set);
+    // console.log('update $push:', modifiers.$push);
+    Souls.update(soul._id, modifiers);
+
+
+    function addHistory(oldValue, fieldName, firtTime) {
+      if (oldValue) {
+        modifiers.$push = modifiers.$push || defaultHistoryModVal;
+        modifiers.$push.history.$each.push({
+          key: fieldName,
+          val: oldValue,
+          when: now,
+          first: firtTime
+        });
+      }
+    }
   }
 });

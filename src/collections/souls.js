@@ -15,7 +15,11 @@ var SoulHistorySchema = new SimpleSchema({
     type: String
   },
   when: {
-    type: Date,
+    type: Date
+  },
+  first: {          // For history only: true if inserted when history is emprty
+    type: Boolean,
+    optional: true,
   }
 });
 
@@ -49,15 +53,26 @@ var SoulSchema = new SimpleSchema({
     optional: true
   },
 
-  visible: {
+  invisibleImages: {
     type: Boolean,
     label: 'Is user have hidden photo',
+    optional: true
+  },
+
+  invisiblImage4Request: {
+    type: Boolean,
+    label: 'Is user show only for chosenone his photos',
     optional: true
   },
 
   mainInfo: {
     type: String,
     optional: true,
+  },
+
+  about: {
+    type: [SoulHistorySchema],
+    optional: true
   },
 
   history: {
