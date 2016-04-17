@@ -41,7 +41,11 @@ Meteor.startup(function() {
     try {
       res = fetchProfile(job);
     } catch (e) {
-      job.fail('' + e);
+      if (e.stack) {
+        job.fail(e.stack);
+      } else {
+        job.fail('' + e);
+      }
     } finally {
       job.done(res);
     }

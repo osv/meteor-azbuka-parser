@@ -56,7 +56,11 @@ Meteor.startup(function() {
           process(daysForScan, 'male', logProgressFn);
         }
       } catch (e) {
-        job.fail('' + e);
+        if (e.stack) {
+          job.fail(e.stack);
+        } else {
+          job.fail('' + e);
+        }
       } finally {
         Settings.update(setting._id, {$set: {'scrap.date': new Date()}});
         job.done();
@@ -95,11 +99,11 @@ Meteor.startup(function() {
 
         // create update profile job
         FetchJobs.createProfileJob(profileId);
-        
+
         // TODO: add image job for {item._id, item.imageId}
       });
 
-      
+
       page++;
       Meteor._sleepForMs(2000);
       progressFn(3);
@@ -108,4 +112,3 @@ Meteor.startup(function() {
 
   }
 });
-
