@@ -1,4 +1,4 @@
-/*global Job, FetchJobs, check */
+/*global Job, FetchJobs, UserImages, syncRequest, check */
 
 /*
  * user's picture fetcher
@@ -52,6 +52,35 @@ Meteor.startup(function() {
   }
 
   function fetchImage(job) {
+    const imageBaseUrls = {
+      'http://azbyka.ru/znakomstva/img/users_fotos/': UserImages.SIZE_BIG,
+      'http://azbyka.ru/znakomstva/img/users_fotos_small/': UserImages.SIZE_SMALL,
+      'http://azbyka.ru/znakomstva/img/users_fotos_medium/': UserImages.SIZE_MEDIUM,
+    };
 
+    var filename = job.data.imageId;
+
+    var savedImages = UserImages.find({filename: filename}).fetch();
+    _.each(imageBaseUrls, function downloadSizedImage(size, baseUrl) {
+      var isSaved = _.find(savedImages, function findSameSizeInSaved(it) {
+        return size === (it.metadata || {}).size;
+      });
+      if (!isSaved) {
+        let url = baseUrl + filename;
+        let image = syncRequest.get(url, {
+          encoding: null,        // binary
+        });
+        var stream = UserImages.upsertStream({
+          contentType: image.headers['content-type'] || 'image/jpeg',
+          filename: filename,
+          metadata: {
+            size: size
+          }
+        });
+        stream.write(image.content);
+        stream.end();
+        job.log('Saved ' + size);
+      }
+    });
   }
 });
