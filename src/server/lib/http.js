@@ -1,5 +1,21 @@
-/*global syncRequest, Meteor, makeErrorByStatus */
+/*global syncRequest, Meteor */
 var request = Meteor.npmRequire('request');
+
+var makeErrorByStatus = function(statusCode, content) {
+  var MAX_LENGTH = 500; // if you change this, also change the appropriate test
+
+  var truncate = function(str, length) {
+    return str.length > length ? str.slice(0, length) + '...' : str;
+  };
+
+  var contentToCheck = typeof content === 'string' ? content : content.toString();
+  var message = 'failed [' + statusCode + ']';
+
+  if (contentToCheck) {
+    message += ' ' + truncate(contentToCheck.replace(/\n/g, ' '), MAX_LENGTH);
+  }
+  return new Error(message);
+};
 
 var populateData = function(response) {
   var contentType, err;
@@ -103,3 +119,13 @@ syncRequest['delete'] = Meteor.wrapAsync(wrappedDelete);
 syncRequest.del = syncRequest['delete'];
 // create request's jar
 syncRequest.jar = request.jar;
+
+Meteor.startup(function () {
+  fs = Npm.require('fs');
+  var d = syncRequest.get('http://i3.i.ua/news/tn/7/4/27547_1.jpg', {
+    encoding: null
+  });
+  console.log(d);
+
+  fs.writeFileSync('/tmp/111.jpg', d.content);
+});
