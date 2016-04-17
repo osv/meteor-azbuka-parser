@@ -1,5 +1,5 @@
 /*global Errors, Azbuka, Meteor, console, JobProfiles, JobImages */
-/*global Souls, check, Match, syncRequest */
+/*global Souls, check, Match, syncRequest, Settings */
 
 
 var Iconv = Meteor.npmRequire('iconv').Iconv,
@@ -42,6 +42,9 @@ Azbuka.error = function(obj) {
 // Fetch @uri. Set @useCookie to true for use cookie
 Azbuka.get = function(url, useCookie) {
   var options = {
+    headers: {
+      'User-Agent': Settings.getRandomUA()
+    },
     encoding: null,           // get content as binary data
     responseType: 'buffer'    // get it as a buffer
   };

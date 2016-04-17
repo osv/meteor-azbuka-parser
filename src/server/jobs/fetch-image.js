@@ -1,4 +1,4 @@
-/*global Job, FetchJobs, UserImages, syncRequest, check */
+/*global Job, FetchJobs, UserImages, syncRequest, Settings, check */
 
 /*
  * user's picture fetcher
@@ -34,8 +34,6 @@ Meteor.startup(function() {
   };
 
   function worker(job, callback) {
-    console.log('fetching image');
-
     var res;
     try {
       res = fetchImage(job);
@@ -69,6 +67,9 @@ Meteor.startup(function() {
         let url = baseUrl + filename;
         let image = syncRequest.get(url, {
           encoding: null,        // binary
+          headers: {
+            'User-Agent': Settings.getRandomUA()
+          }
         });
         var stream = UserImages.upsertStream({
           contentType: image.headers['content-type'] || 'image/jpeg',
