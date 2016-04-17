@@ -1,4 +1,4 @@
-/*global CircleJobs, Job, console */
+/*global CircleJobs, FetchJobs, Job, console */
 
 Meteor.startup(function() {
   var later = CircleJobs.later;
@@ -8,7 +8,7 @@ Meteor.startup(function() {
     var hasJob = CircleJobs.findOne({type: CircleJobs.TYPE_CLEANER_CIRCLES, status: {$ne: 'completed'}});
     if (!hasJob) {
       new Job(CircleJobs, CircleJobs.TYPE_CLEANER_CIRCLES, {}).repeat({
-        schedule: later.parse.text('every 1 minutes')
+        schedule: later.parse.text('every 3 hours')
       })
         .retry({
           retries: 1,
@@ -22,17 +22,23 @@ Meteor.startup(function() {
 
   CircleJobs.startCleanupWorker = function() {
     queue = CircleJobs.processJobs(CircleJobs.TYPE_CLEANER_CIRCLES, {
-      workTimeout: 5 * 60 * 1000
+      workTimeout: 15 * 60 * 1000
     }, processCleanUp);
 
     function processCleanUp(job, cb) {
-      var current, ids;
-      current = new Date();
-      current.setMinutes(current.getMinutes() - 2);
-      ids = CircleJobs.find({
+      var removedCircle = removeOldCircleJobs();
+      var removedFetch =  removeOldFetchJobs();
+      job.done(`Removed ${removedCircle} circle jobs and ${removedFetch} jobs`);
+      return cb();
+    }
+
+    function removeOldCircleJobs() {
+      var time = new Date();
+      time.setTime(time.getTime() - 3 * 24 * 60 * 60 * 1000);
+      var ids = CircleJobs.find({
         status: 'completed',
         updated: {
-          $lt: current
+          $lt: time
         }
       }, {
         fields: {
@@ -45,8 +51,29 @@ Meteor.startup(function() {
       if (ids.length > 0) {
         CircleJobs.removeJobs(ids);
       }
-      job.done('Removed ' + ids.length + ' old jobs');
-      return cb();
+      return ids.length;
+    }
+
+    function removeOldFetchJobs(arg) {
+      var time = new Date();
+      time.setTime(time.getTime() - 7 * 24 * 60 * 60 * 1000);
+      var ids = FetchJobs.find({
+        status: 'completed',
+        updated: {
+          $lt: time
+        }
+      }, {
+        fields: {
+          _id: 1
+        }
+      }).map(function(d) {
+        return d._id;
+      });
+
+      if (ids.length > 0) {
+        FetchJobs.removeJobs(ids);
+      }
+      return ids.length;
     }
   };
 });
