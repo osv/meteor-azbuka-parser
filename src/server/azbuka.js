@@ -377,7 +377,8 @@ Azbuka.getProfile = function(options) {
     pNumOfImages = matches[1];   // \d+
   }
 
-  var pAbout = {};
+  var pAbout = {},
+      pTestRate = 0;
   $('.about-item').each(function() {
     var el = $(this).clone();
     var elText = el.text();
@@ -394,6 +395,7 @@ Azbuka.getProfile = function(options) {
 
     var [, testRate, testQuestions] = elText.match(/(\d+)%\s+из\s+(\d+)\s+вопрос/) || [];
     if (testRate) {
+      pTestRate = testRate;
       pAbout['Test rate (%)'] = testRate;
       pAbout['Tests'] = testQuestions;
     }
@@ -436,6 +438,7 @@ Azbuka.getProfile = function(options) {
     views: +pViews,
     maininfo: maininfo.html(),
     lastSeen: pLastseen,
+    testRate: pTestRate,
     about: pAbout,
     invisibleImages: pHasInvisibleImages,
     invisiblImage4Request: pHasInvisiblImage4Request,

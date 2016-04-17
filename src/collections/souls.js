@@ -65,6 +65,12 @@ var SoulSchema = new SimpleSchema({
     optional: true
   },
 
+  testRate: {
+    type: Number,
+    decimal: true,
+    optional: true
+  },
+
   mainInfo: {
     type: String,
     optional: true,

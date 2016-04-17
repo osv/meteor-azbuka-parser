@@ -143,7 +143,7 @@ Meteor.startup(function() {
   function saveProfileData(soulId, data) {
     const FIELDS_NO_HISTORY = ['views', 'lastSeen', 'mainInfo',
                                'invisiblImage4Request', 'invisibleImages'];
-    const FIELDS_HISTORY = ['name', 'age', 'loc'];
+    const FIELDS_HISTORY = ['name', 'age', 'loc', 'testRate'];
 
     var soul = Souls.findOne(soulId),
         firtTime = ! soul.about, // when  first  time profile  updated,  usually
