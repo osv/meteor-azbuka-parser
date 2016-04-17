@@ -119,13 +119,3 @@ syncRequest['delete'] = Meteor.wrapAsync(wrappedDelete);
 syncRequest.del = syncRequest['delete'];
 // create request's jar
 syncRequest.jar = request.jar;
-
-Meteor.startup(function () {
-  fs = Npm.require('fs');
-  var d = syncRequest.get('http://i3.i.ua/news/tn/7/4/27547_1.jpg', {
-    encoding: null
-  });
-  console.log(d);
-
-  fs.writeFileSync('/tmp/111.jpg', d.content);
-});
