@@ -52,7 +52,7 @@ Meteor.startup(function() {
         if (gender === 'any' || gender === 'female') {
           process(daysForScan, 'female', logProgressFn);
         }
-        if (gender === 'any' || gender === 'female') {
+        if (gender === 'any' || gender === 'male') {
           process(daysForScan, 'male', logProgressFn);
         }
       } catch (e) {
