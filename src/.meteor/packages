@@ -36,8 +36,10 @@ reactive-var
 check
 less
 momentjs:moment
+lbee:moment-helpers
 meteorhacks:npm
 
 npm-container
 vsivsi:job-collection
 vsivsi:file-collection
+alethes:pages
