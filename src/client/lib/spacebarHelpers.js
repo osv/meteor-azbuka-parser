@@ -13,7 +13,11 @@ Template.registerHelper('eq', function (a, b) {
   return a == b;
 });
 
-Template.registerHelper('prettyJson', function(obj) {
+Template.registerHelper('not', function (a) {
+  return !a;
+});
+
+Template.registerHelper('prettyJson', function(obj, truncate) {
   var json = JSON.stringify(obj, true, 2);
 
   return json
@@ -33,6 +37,34 @@ Template.registerHelper('prettyJson', function(obj) {
     } else {
       cls = 'number';
     }
+
+    if (_.isBoolean(truncate) && truncate) {
+      var ellipsis = (match.length > 64) ? '...' : '';
+      match = match.substring(0, 64) + ellipsis;
+    }
+
     return '<span class="json-' + cls + '">' + match + '</span>';
   }
 });
+
+Template.registerHelper('attrIfNot', textIfNot);
+Template.registerHelper('classIfNot', textIfNot);
+Template.registerHelper('classIf', textIf);
+
+function textIfNot(prop, attr){
+  if (_.isArray(prop)) {
+    return _.isEmpty(prop) ? attr : '';
+  } else {
+    return ! prop ? attr : '';
+  }
+}
+
+function textIf(prop, attr, attrNot) {
+  attrNot = attrNot || '';
+  attr = attr || '';
+  if (_.isArray(prop)) {
+    return _.isEmpty(prop) ? attrNot: attr;
+  } else {
+    return ! prop ? attrNot : attr;
+  }
+}
