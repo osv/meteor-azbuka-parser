@@ -1,0 +1,25 @@
+<template name="adminErrors">
+  <div class="row">
+    <div class="pull-left">
+      {{> pagesNav}}
+    </div>
+    <div class="col-md-12">
+      {{> pages}}
+    </div>
+    <div class="pull-left">
+      {{> pagesNav}}
+    </div>
+  </div>
+</template>
+
+<template name="adminError">
+  <div class="row error-item">
+    <div class="col-md-12">
+      Created: {{moFormat updatedAt "YYYY-MM-DD h:mm"}}
+      ({{moFromNow createdAt}})
+    </div>
+    <div class="col-md-12" title="Double click to expand">
+      <div class="{{classIf expand "error-pre" "error-pre-hide"}}">{{{prettyJson body (not expand)}}}</div>
+    </div>
+  </div>
+</template>

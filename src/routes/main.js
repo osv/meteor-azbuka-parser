@@ -1,5 +1,5 @@
-/* globals Router, SEO, Settings, RouteController, AdminController:true, AuthController:true */
-
+/*global Router, SEO, Settings, RouteController, AdminController:true, AuthController:true */
+/*global ErrorsPages, Errors, Acl*/
 Router.route('/', {
   name: 'home',
 
@@ -31,7 +31,7 @@ AdminController = AuthController.extend({
   }
 });
 
-Router.route('/settings', {
+Router.route('/admin/settings', {
   name: 'settings',
 
   subscriptions() {
@@ -46,7 +46,7 @@ Router.route('/settings', {
   }
 });
 
-Router.route('/control', {
+Router.route('/admin/control', {
   name: 'control',
 
   controller: 'AdminController',
@@ -61,4 +61,23 @@ Router.route('/control', {
   data() {
     SEO.set({title: 'Control - ' + Meteor.App.NAME});
   }
+});
+
+/* jshint -W020 */
+ErrorsPages = new Meteor.Pagination(Errors, {
+  auth: Meteor.isClient ? function(){} : function(skip, subscription) {
+    return Acl.isAdminById(subscription.userId);
+  },
+  perPage: 20,
+  templateName: 'adminErrors',
+  router: 'iron-router',
+  homeRoute: '/admin/errors',
+  route: '/admin/errors/',
+  routerTemplate: 'adminErrors',
+  routerLayout: 'appLayout',
+  itemTemplate: 'adminError',
+  divWrapper: '',
+  resetOnReload: true,
+  pageSizeLimit: 100,
+  sort: {createdAt: -1},
 });

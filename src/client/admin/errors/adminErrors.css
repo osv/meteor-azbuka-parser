@@ -1,0 +1,31 @@
+.error-item {
+    border: 1px solid #ccc;
+    margin: 4px;
+}
+
+.error-pre {
+    white-space: pre-wrap;
+    font-family: monospace;
+}
+
+.error-pre-hide {
+    max-height: 120px;
+    overflow: hidden;
+  /* max-height: 300px; */
+  /*   overflow-x: hidden; */
+  /*   text-overflow: ellipsis; */
+  /*   white-space: nowrap; */
+  /*   word-break: break-all; */
+}
+
+.json-key {
+  font-weight: bold;
+}
+
+.json-string {
+  color: green;
+}
+
+.json-boolean, .json-null, json-number {
+  color: blue;
+}
